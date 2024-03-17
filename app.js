@@ -49,7 +49,6 @@ app.post('/register',async(req,res)=>{
 //login users
 app.post('/login',async(req,res)=>{
     const {userEmail,userPassword}=req.body;
-    // console.log(req.body)
     
     if(!userEmail || !userPassword){
         return res.status(400).json({
@@ -59,7 +58,6 @@ app.post('/login',async(req,res)=>{
 
     //check registered or not
     const registeredData=await userModel.find({userEmail:userEmail})
-    // console.log(registeredData)
     if(registeredData.length== 0){
         return res.status(404).json({
             message:"user not found"
