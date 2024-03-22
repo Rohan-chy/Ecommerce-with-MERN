@@ -21,7 +21,17 @@ const userSchema=new mongoose.Schema({
         type:String,
         enum:['customer','admin'],
         default:"customer"
+    },
+    otp:{
+        type:Number
+    },
+    otpVerified:{
+        type:Boolean,
+        default:false
     }
+},
+{
+    timestamps:true
 })
 
 module.exports=mongoose.model('UserModel',userSchema);
