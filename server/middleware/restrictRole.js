@@ -5,8 +5,6 @@ const restrictRole=(...roles)=>{
 
         //req.user agadiko isAuthenticated bata aaera xa
         const userRole=req.user[0].role;
-        console.log(userRole);
-        console.log(roles)
 
         if(!roles.includes(userRole)){
             return res.status(403).json({

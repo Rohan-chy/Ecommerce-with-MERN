@@ -1,6 +1,16 @@
 const productModel = require("../model/productModel");
 
 exports.adminProductController=async(req,res)=>{
+
+    const file=req.file;
+    let filePath;
+    if(!file){
+       filePath='' 
+    }
+    else{
+        filePath=file.filename
+    }
+    
     const {productName,productDescription,productPrice,productQuantity,productStatus}=req.body;
 
     //productname
@@ -43,7 +53,8 @@ exports.adminProductController=async(req,res)=>{
         productDescription,
         productPrice,
         productQuantity,
-        productStatus
+        productStatus,
+        productImage:`http://localhost:${process.env.PORT}/${filePath}`
     })
 
     res.status(200).json({

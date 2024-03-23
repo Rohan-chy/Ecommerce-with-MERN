@@ -14,6 +14,15 @@ require('dotenv').config()
 //database connection
 connectDb();
 
+//node js lai uploads folder ko access dina vaneko ho
+app.use(express.static('./uploads'))
+
+app.get('/',(req,res)=>{
+    return res.status(200).json({
+        message:"ok"
+    })
+})
+
 //authentication route
 app.use('',authRoute)
 
