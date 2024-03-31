@@ -39,7 +39,7 @@ const isAuthenticated=async(req,res,next)=>{
         })
     }
 
-    //sending user data to productController in variable req.user
+    //sending user data to other further Controller in variable req.user
     req.user=userData;
     next();
 
