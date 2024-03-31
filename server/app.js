@@ -2,6 +2,7 @@ const express=require('express')
 const { connectDb } = require('./database/database')
 const authRoute=require('./routes/authRoutes')
 const productRoute=require('./routes/productRoute')
+const adminUserRoute=require('./routes/adminUserRoute')
 
 const app=express()
 
@@ -29,6 +30,8 @@ app.use('',authRoute)
 //admin product route
 app.use('',productRoute)
 
+//admin user route
+app.use('',adminUserRoute)
 
 app.listen(process.env.PORT,()=>{
     console.log(`server startd at port ${process.env.PORT}`)
