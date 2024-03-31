@@ -21,6 +21,30 @@ exports.adminUser=async(req,res)=>{
             message:"no adminUsers found"
         })
     }
+  
+}
 
-    
+
+// delete users
+exports.deleteUser=async(req,res)=>{
+    const {id}=req.params;
+
+    if(!id){
+        return res.status(400).json({
+            message:"please provide user id"
+        })
+    }
+
+    const userExist=await userModel.findById(id);
+
+    if(!userExist){
+        return res.status(400).json({
+            message:"no user found"
+        })
+    }
+
+    await userModel.findByIdAndDelete(id);
+    res.status(200).json({
+        message:"user deleted"
+    })
 }
