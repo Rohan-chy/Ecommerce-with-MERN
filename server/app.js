@@ -4,6 +4,7 @@ const authRoute=require('./routes/authRoutes')
 const productRoute=require('./routes/productRoute')
 const adminUserRoute=require('./routes/adminUserRoute')
 const userReviewRoute=require('./routes/userReviewRoute')
+const cartRoute=require('./routes/cartRoute')
 
 const app=express()
 
@@ -36,6 +37,9 @@ app.use('',adminUserRoute)
 
 //user review route
 app.use('',userReviewRoute)
+
+//cart route
+app.use('',cartRoute)
 
 app.listen(process.env.PORT,()=>{
     console.log(`server startd at port ${process.env.PORT}`)
