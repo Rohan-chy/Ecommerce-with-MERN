@@ -60,3 +60,126 @@ exports.getMyAllOrders=async(req,res)=>{
         data:orders
     })
 }
+
+
+//update orders
+exports.updateOrder=async(req,res)=>{
+    const userId=req.user[0]._id;
+    const orderId=req.params.id;
+    const {items,shippingAddress}=req.body
+
+    if(!orderId){
+        return res.status(400).json({
+            message:"please provide order id"
+        })
+    }
+
+    const orders=await orderModel.findById(orderId);
+
+    if(!orders){
+        return res.status(400).json({
+            message:"no order found"
+        })
+    }
+
+    // check jasle order gareko usko id xa ki nai order schema maa
+    if(orders.userId != userId){
+        return res.status(400).json({
+            message:"you do not have permission"
+        })
+    }
+
+    // check order status
+    if(orders.orderStatus=='on the way'){
+        return res.status(400).json({
+            message:"can not update, order is on the way"
+        })
+    }
+
+    const updatedOrder=await orderModel.findByIdAndUpdate(orderId,{
+        items,
+        shippingAddress
+    },{new:true})
+
+    res.status(200).json({
+        message:"order updated",
+        data:updatedOrder
+    })
+}
+
+exports.deleteOrder=async(req,res)=>{
+    const userId=req.user[0]._id;
+    const orderId=req.params.id;
+
+    if(!orderId){
+        return res.status(400).json({
+            message:"please provide orderId"
+        })
+    }
+
+    const orders=await orderModel.findById(orderId)
+
+    if(!orders){
+        return res.status(400).json({
+            message:"no orders found"
+        })
+    }
+
+    if(orders.userId != userId){
+        return res.status(400).json({
+            message:"do not have permission"
+        })
+    }
+
+    await orderModel.findByIdAndDelete(orderId)
+
+    res.status(200).json({
+        message:"order delete success"
+    })
+}
+
+// cancel order
+exports.cancelOrder=async(req,res)=>{
+    const userId=req.user[0]._id;
+    const orderId=req.params.id;
+
+    
+    if(!orderId){
+        return res.status(400).json({
+            message:"please provide order id"
+        })
+    }
+
+    const orders=await orderModel.findById(orderId);
+
+    if(!orders){
+        return res.status(400).json({
+            message:"no order found"
+        })
+    }
+
+    // check jasle order gareko usko id xa ki nai order schema maa
+    if(orders.userId != userId){
+        return res.status(400).json({
+            message:"you do not have permission"
+        })
+    }
+
+    // check order status
+    if(orders.orderStatus !='pending'){
+        return res.status(400).json({
+            message:"can not update, order is processed"
+        })
+    }
+
+    const updatedOrder=await orderModel.findByIdAndUpdate(orderId,{
+        orderStatus:'cancelled'
+    },{
+        new:true
+    })
+
+    res.status(200).json({
+        message:"order cancelled successfully",
+        data:updatedOrder
+    })
+}
