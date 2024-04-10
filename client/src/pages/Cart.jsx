@@ -7,9 +7,9 @@ const Cart = () => {
   const item=useSelector((state)=>state.cart)
   
   const dispatch=useDispatch()
+  
   // function to remove item
   const removeItem=(id)=>{
-    console.log(id);
     dispatch(remove(id))
   }
   return (

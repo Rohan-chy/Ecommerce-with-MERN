@@ -1,25 +1,38 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import { add } from '../store/cartSlice';
+import { fetchProducts } from '../store/productSlice';
 
 const Home = () => {
-    const [product,setProduct]=useState([]);
+    // const [product,setProduct]=useState([]);
     const dispatch=useDispatch();
+    const {data:product,status}=useSelector((state)=>state.products)
+    console.log(status)
+    
 
-    const fetchProduct=async()=>{
-        const res=await axios.get('http://localhost:5000/product/')
-        if(res.status==200){
-            setProduct(res.data.products)
-        }
-    }
+    // const fetchProduct=async()=>{
+    //     const res=await axios.get('http://localhost:5000/product/')
+    //     if(res.status==200){
+    //         setProduct(res.data.products)
+    //     }
+    // }
 
     useEffect(()=>{
-        fetchProduct();
+        // fetchProduct();
+        dispatch(fetchProducts())
     },[])
 
     const addToCart=(product)=>{
         dispatch(add(product))
+    }
+
+    if(status=='loading'){
+      return <div>Loading....</div>
+    }
+
+    if(status=='error'){
+      return <div>Error....</div>
     }
 
   return (
