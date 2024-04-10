@@ -114,7 +114,15 @@ exports.deleteProduct=async(req,res)=>{
     const oldImage=oldData.productImage;
     const server_url_length=process.env.SERVER_URL.length;
 
-    const filter_oldImage=oldImage.slice(server_url_length);
+     if(!oldImage){
+	return res.status(400).json({
+		message:"no previous image"
+	})
+}
+
+    const filter_oldImage=oldImage?.slice(server_url_length);
+	
+  
 
     // deleting images from uploads folder
     fs.unlink(`./uploads/${filter_oldImage}`,(error)=>{

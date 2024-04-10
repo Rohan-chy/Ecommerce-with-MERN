@@ -7,6 +7,7 @@ const userReviewRoute=require('./routes/userReviewRoute')
 const cartRoute=require('./routes/cartRoute')
 const orderRoute=require('./routes/orderRoute')
 
+var cors = require('cors')
 const app=express()
 
 app.use(express.json())
@@ -17,6 +18,8 @@ require('dotenv').config()
 
 //database connection
 connectDb();
+
+app.use(cors())
 
 //node js lai uploads folder ko access dina vaneko ho
 app.use(express.static('./uploads'))
