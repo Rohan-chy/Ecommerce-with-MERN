@@ -22,7 +22,7 @@ exports.registerUser=async(req,res)=>{
         })
     }
 
-    await userModel.create({
+    const users=await userModel.create({
         userName,
         userEmail,
         userNumber,
@@ -30,7 +30,8 @@ exports.registerUser=async(req,res)=>{
     })
 
     res.status(201).json({
-        message:"user registered successfully"
+        message:"user registered successfully",
+	data: users
     })
 }
 

@@ -8,6 +8,9 @@ import store from './store/store'
 import Home from './pages/Home'
 import { BrowserRouter,Routes, Route } from 'react-router-dom'
 import Cart from './pages/Cart'
+import RegistrationForm from './pages/RegistrationForm'
+import LoginForm from './pages/LoginForm'
+import ProductDetails from './pages/productDetails/ProductDetails'
 
 function App() {
 
@@ -18,6 +21,9 @@ function App() {
         <Routes>
           <Route path='/' element={<Home/>}/>
           <Route path='/cart' element={<Cart/>}/>
+          <Route path='/register' element={<RegistrationForm/>}/>
+          <Route path='/login' element={<LoginForm/>}/>
+          <Route path='/productdetails/:id' element={<ProductDetails/>}/>
         </Routes>
       
       </BrowserRouter>

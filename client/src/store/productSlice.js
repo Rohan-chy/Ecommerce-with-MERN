@@ -1,12 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
-import axios from "axios"
-
-// Object.freeze method le object lai freeze garxa modify garna didaina write garna didaina just read matrai garna dinxa 
-const STATUS=Object.freeze({
-    SUCCESS:'success',
-    LOADING:'loading',
-    ERROR:'error'
-})
+import { STATUS } from "../global/Status"
+import { API } from "../http"
 
 
 const productSlice=createSlice({
@@ -34,7 +28,7 @@ export function fetchProducts(){
     return async function fetchProductsThunk(dispatch,getState){
         dispatch(setStatus(STATUS.LOADING))
         try {
-            const res=await axios.get('http://localhost:5000/product/')
+            const res=await API.get('/product/')
             dispatch(setProduct(res.data.products))
             dispatch(setStatus(STATUS.SUCCESS))
         } catch (error) {
