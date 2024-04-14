@@ -8,7 +8,7 @@ const authSlice=createSlice({
     initialState:{
         data:[],
         status:STATUS.SUCCESS,
-        message:'invalid credentials'
+        message:''
     },
     reducers:{
         setUsers(state,action){
@@ -33,12 +33,18 @@ export function registerUser(data){
         dispatch(setUserStatus(STATUS.LOADING))
         try {
             const res=await API.post('/register',data)
-            dispatch(setUsers(res.data.data))
-            dispatch(setMessage(res.data.message))
+            // console.log(res)
+            if(res.status>=200 && res.status<=300){
+                dispatch(setUsers(res.data.data))
+                 dispatch(setMessage(res.data.message))
+            }
             dispatch(setUserStatus(STATUS.SUCCESS))
+
         } catch (error) {
             console.log("registration error:",error)
-            dispatch(setMessage(error.response.data.message))
+            if(error.response.status>=400){
+                dispatch(setMessage(error.response.data.message))
+            }
             dispatch(setUserStatus(STATUS.ERROR))   
         }
     }
@@ -50,14 +56,19 @@ export function loginUser(data){
         dispatch(setUserStatus(STATUS.LOADING))
         try {
             const res=await API.post('/login',data)
-            localStorage.setItem('token',res.data.token)
-            dispatch(setMessage(res.data.message))
-            // dispatch(setUserStatus(STATUS.SUCCESS))
+            if(res.status>=200 && res.status<=300){
+                localStorage.setItem('token',res.data.token)
+                dispatch(setMessage(res.data.message))
+            }
+            console.log(res)
+            dispatch(setUserStatus(STATUS.SUCCESS))
 
         } catch (error) {
             console.log("login error:",error)
+            if(error.response.status>=400){
+                dispatch(setMessage(error.response.data.message))
+            }
             dispatch(setUserStatus(STATUS.ERROR)) 
-            dispatch(setMessage(error.response.data.message))
             
         }
     }

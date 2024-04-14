@@ -31,14 +31,18 @@ const LoginForm = () => {
     dispatch(loginUser(formData))
 
     if(message==='login success'){
-        return navigate('/')
+         navigate('/')
+    }
+    else{
+      alert(message)
+     navigate('/login')
     }
 
 
-    if(message!='login success'){
-        alert(message)
-        return navigate('/login')
-    }
+    // if(message!='login success'){
+    //     alert(message)
+    //     return navigate('/login')
+    // }
 
   
   };

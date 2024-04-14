@@ -31,17 +31,26 @@ const RegistrationForm = () => {
     // Handle form submission here
     dispatch(registerUser(formData))
 
-    if(status===STATUS.SUCCESS){
-        return navigate('/login')
-    }
+    // if(status===STATUS.SUCCESS){
+    //     return navigate('/login')
+    // }
 
-    if(message==='user already registered'){
-        alert("already registered")
-        return navigate('/login')
+    // if(message==='user already registered'){
+    //     alert("already registered")
+    //     return navigate('/login')
+    // }
+    // if(status===STATUS.ERROR){
+    //      alert("something went wrong")
+    //      return navigate('/register')
+    // }
+
+    if(message&&message==='user registered successfully'){
+      alert(message)
+      navigate('/login')
     }
-    if(status===STATUS.ERROR){
-         alert("something went wrong")
-         return navigate('/register')
+    else{
+      alert(message)
+      navigate('/register')
     }
     
   };

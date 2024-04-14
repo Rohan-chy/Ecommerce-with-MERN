@@ -7,8 +7,6 @@ import { Link } from 'react-router-dom';
 const Home = () => {
     const dispatch=useDispatch();
     const {data:product,status}=useSelector((state)=>state.products)
-    
-
 
     useEffect(()=>{
         dispatch(fetchProducts())
