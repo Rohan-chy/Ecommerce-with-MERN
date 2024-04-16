@@ -19,13 +19,30 @@ exports.addToCart=async(req,res)=>{
         })
     }
 
-    // user maa xa cart so user fetch gareko ani tesko cart maa productId push gareko
+    // user maa xa cart so user fetch gareko ani tesko cart maa productId push garne ho
     const user=await userModel.findById(userId);
-    user.cart.push(productId);
+
+    // add gareko item cart maa already exist xa ki nai check gareko
+    const existCartItem=user.cart.find((item)=>item.product.equals(productId));
+
+    // cart item already exist xa vne quantity matrai increase garne . xaina vne item add garne by default quantity 1 hunxa
+    if(existCartItem){
+        existCartItem +=1
+    }
+    else{
+        user.cart.push({
+            quantity:1,
+            product:productId
+        })
+    }
+
     await user.save()
 
+    // user model bata updated data leko ra user model maaa vako cart ko data pathako
+    const updatedUser=await userModel.findById(userId).populate('cart.product')
     res.status(200).json({
-        message:"product added to cart"
+        message:"product added to cart",
+        data:updatedUser.cart
     })
 
 }
