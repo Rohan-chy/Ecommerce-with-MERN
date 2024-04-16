@@ -60,7 +60,8 @@ exports.loginUser=async(req,res)=>{
 
         res.status(200).json({
             message:"login success",
-            token:token
+            token:token,
+            data:registeredData
         })
     }
     else{

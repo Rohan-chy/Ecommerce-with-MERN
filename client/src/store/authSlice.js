@@ -19,11 +19,14 @@ const authSlice=createSlice({
         },
         setMessage(state,action){
             state.message=action.payload
+        },
+        logoutUser(state,action){
+            state.data=[]
         }
     }
 })
 
-export const {setUsers,setUserStatus,setMessage}=authSlice.actions;
+export const {setUsers,setUserStatus,setMessage,logoutUser}=authSlice.actions;
 
 export default authSlice.reducer;
 
@@ -57,10 +60,10 @@ export function loginUser(data){
         try {
             const res=await API.post('/login',data)
             if(res.status>=200 && res.status<=300){
+                dispatch(setUsers(res.data.data))
                 localStorage.setItem('token',res.data.token)
                 dispatch(setMessage(res.data.message))
             }
-            console.log(res)
             dispatch(setUserStatus(STATUS.SUCCESS))
 
         } catch (error) {

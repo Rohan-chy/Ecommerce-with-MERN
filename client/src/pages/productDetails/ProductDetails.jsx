@@ -1,11 +1,15 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import {useParams} from 'react-router-dom'
+import {useParams,useNavigate} from 'react-router-dom'
 import { API } from '../../http'
+import { useSelector } from 'react-redux'
 
 const ProductDetails = () => {
   const id=useParams().id;
   const [details,setDetails]=useState([]);
+  const navigate=useNavigate();
+
+  const {data:user}=useSelector((state)=>state.auth)
 
   const fetchProductDetails=async()=>{
     try {
@@ -21,6 +25,11 @@ const ProductDetails = () => {
     fetchProductDetails()
   },[])
 
+  const addCart=()=>{
+    if(user.length==0 && (localStorage.getItem('token')=='' || localStorage.getItem('token')==null || localStorage.getItem('token')==undefined)){
+      return navigate('/login')
+    }
+  }
 
   return (
 <div className="flex min-h-screen items-center justify-center bg-gray-100">
@@ -78,7 +87,7 @@ const ProductDetails = () => {
       </div>
       <div className="flex space-x-4 mb-6 text-sm font-medium">
         <div className="flex-auto flex space-x-4">
-          <button className="h-10 px-6 font-semibold rounded-md border border-balck-800 text-gray-900" type="button">
+          <button onClick={addCart} className="h-10 px-6 font-semibold rounded-md border border-balck-800 text-gray-900" type="button">
             Add to cart
           </button>
         </div>

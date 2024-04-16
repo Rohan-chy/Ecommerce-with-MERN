@@ -1,11 +1,20 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useSelector,useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { logoutUser } from '../store/authSlice';
 
 const Navbar = () => {
     // reading cart value from store
     const item=useSelector((state)=>state.cart)
+    const {data:user}=useSelector((state)=>state.auth)
+    const dispatch=useDispatch();
+    const navigate=useNavigate();
+
+    const logOut=()=>{
+        dispatch(logoutUser())
+        localStorage.removeItem('token')
+        navigate('/login')
+    }
 
 
   return (
@@ -47,7 +56,10 @@ const Navbar = () => {
                     </div>
 
                     <div className="w-full space-y-2 border-yellow-200 lg:space-y-0 md:w-max lg:border-l">
-                        <button type="button" title="Start buying" className="w-full py-3 px-6 text-center rounded-full transition active:bg-yellow-200 focus:bg-yellow-100 sm:w-max">
+                       {
+                        user.length==0 && (localStorage.getItem('token')=='' || localStorage.getItem('token')==null || localStorage.getItem('token')==undefined) ?
+                        <>
+                         <button type="button" title="Start buying" className="w-full py-3 px-6 text-center rounded-full transition active:bg-yellow-200 focus:bg-yellow-100 sm:w-max">
                             <Link to={'/register'} className="block text-yellow-800 font-semibold text-sm">
                                 Sign up
                             </Link>
@@ -57,6 +69,13 @@ const Navbar = () => {
                                 <Link to={'/login'}>Login</Link>
                             </span>
                         </button>
+                        </>:
+                        <button type="button" title="Start buying" className="w-full py-3 px-6 text-center rounded-full transition bg-yellow-300 hover:bg-yellow-100 active:bg-yellow-400 focus:bg-yellow-300 sm:w-max">
+                        <span className="block text-yellow-900 font-semibold text-sm" onClick={logOut}>
+                            Logout
+                        </span>
+                    </button>
+                       }
                     </div>
                 </div>
             </div>

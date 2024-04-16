@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {useDispatch,useSelector} from "react-redux"
 import { loginUser } from '../store/authSlice';
-import { STATUS } from '../global/Status';
 import {useNavigate} from 'react-router-dom'
 
 const LoginForm = () => {
@@ -29,23 +28,19 @@ const LoginForm = () => {
     e.preventDefault();
     // Handle form submission here
     dispatch(loginUser(formData))
+    navigate('/')
 
-    if(message==='login success'){
-         navigate('/')
-    }
-    else{
-      alert(message)
-     navigate('/login')
-    }
-
-
-    // if(message!='login success'){
-    //     alert(message)
-    //     return navigate('/login')
+    // if(message==='login success'){
+    //      navigate('/')
+    // }
+    // else{
+    //   alert(message)
+    //  navigate('/login')
     // }
 
   
   };
+
 
   return (
     <div className="max-w-md mx-auto mt-8 p-6 bg-gray-100 rounded-lg shadow-xl">
