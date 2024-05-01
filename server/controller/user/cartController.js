@@ -92,3 +92,33 @@ exports.deleteItemFromCart=async(req,res)=>{
         message:'product deleted from cart'
     })
 }
+
+exports.updateItemFromCart=async(req,res)=>{
+    const userId=req.user[0]._id;
+    const productId=req.params.id;
+    const quantity=req.body.quantity;
+
+    if(!productId){
+        return res.status(400).json({
+            message:"please provide product id"
+        })
+    }
+
+    // user maa xa cart so user fetch gareko
+    const user=await userModel.findById(userId)
+
+    const cartItem=user.cart.find((item)=>item.product.equals(productId));
+
+    if(!cartItem){
+        return res.status(400).json({
+            message:'no product with that id'
+        })
+    }
+
+    cartItem.quantity=quantity;
+    await user.save();
+    res.status(200).json({
+        message:'item updated successfully',
+        data:user.cart
+    })
+}
