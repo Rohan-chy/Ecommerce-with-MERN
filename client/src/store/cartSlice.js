@@ -15,11 +15,20 @@ const cartSlice=createSlice({
         },
         setCartStatus(state,action){
             state.status=action.payload
+        },
+        updateItem(state,action){
+            // store maa xa ki nai check gareko ani kun index maa xa
+            const index=state.items.findIndex((item)=>item.product._id===action.payload.productId)
+            // array maa 0 index vneko pni auta item hunu ho so -1 check gareko
+            if(index !==-1){
+                // product vetiyo vne tyo index maa quantity update gardine
+                state.items[index].quantity=action.payload.quantity;
+            }
         }
     }
 })
 
-export const {setItem,setCartStatus}=cartSlice.actions;
+export const {setItem,setCartStatus,updateItem}=cartSlice.actions;
 
 export default cartSlice.reducer;
 
@@ -48,5 +57,19 @@ export function fetchCart(){
             console.log("cart fetched error:",error)
             dispatch(setCartStatus(STATUS.ERROR))
         }
+    }
+}
+
+export function updateCart(productId,quantity){
+    return async function updateCartThunk(dispatch){
+        dispatch(setCartStatus(STATUS.LOADING))
+        try {
+            const res=await AunthenticatedAPI.patch(`/cart/${productId}`,{quantity})
+            dispatch(updateItem({productId,quantity}))
+            dispatch(setCartStatus(STATUS.SUCCESS))
+        } catch (error) {
+            console.log("cart fetched error:",error)
+            dispatch(setCartStatus(STATUS.ERROR))
+        } 
     }
 }

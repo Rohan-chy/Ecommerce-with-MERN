@@ -107,6 +107,7 @@ exports.updateItemFromCart=async(req,res)=>{
     // user maa xa cart so user fetch gareko
     const user=await userModel.findById(userId)
 
+    // user ko cart maaa product xa ki nai check gareko
     const cartItem=user.cart.find((item)=>item.product.equals(productId));
 
     if(!cartItem){
