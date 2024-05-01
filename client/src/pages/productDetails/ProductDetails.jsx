@@ -1,40 +1,34 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import {useParams,useNavigate} from 'react-router-dom'
-import { API } from '../../http'
-import { useSelector } from 'react-redux'
+import { useSelector,useDispatch } from 'react-redux'
+import { addToCart } from '../../store/cartSlice'
+import { fetchSingleProduct } from '../../store/productSlice'
 
 const ProductDetails = () => {
   const id=useParams().id;
-  const [details,setDetails]=useState([]);
   const navigate=useNavigate();
+  const dispatch=useDispatch();
 
   const {data:user}=useSelector((state)=>state.auth)
+  const {data:details}=useSelector((state)=>state.products)
 
-  const fetchProductDetails=async()=>{
-    try {
-      const res=await API.get(`/product/${id}`)
-      if(res.status===200){
-        setDetails(...details,res.data.product)
-      }
-    } catch (error) {
-      console.log("singleProductDetails error:",error)
-    }
-  }
   useEffect(()=>{
-    fetchProductDetails()
+    dispatch(fetchSingleProduct(id))
   },[])
 
-  const addCart=()=>{
+  const addCart=(productId)=>{
     if(user.length==0 && (localStorage.getItem('token')=='' || localStorage.getItem('token')==null || localStorage.getItem('token')==undefined)){
       return navigate('/login')
     }
+
+    dispatch(addToCart(productId))
   }
 
   return (
 <div className="flex min-h-screen items-center justify-center bg-gray-100">
   {
-    details.map((item,i)=>(
+    details?.map((item,i)=>(
       <div key={item._id} className="flex font-sans">
     <div className="flex-none w-48 relative">
       <img src={item.productImage} alt="" className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
@@ -87,7 +81,7 @@ const ProductDetails = () => {
       </div>
       <div className="flex space-x-4 mb-6 text-sm font-medium">
         <div className="flex-auto flex space-x-4">
-          <button onClick={addCart} className="h-10 px-6 font-semibold rounded-md border border-balck-800 text-gray-900" type="button">
+          <button onClick={()=>addCart(item._id)} className="h-10 px-6 font-semibold rounded-md border border-balck-800 text-gray-900" type="button">
             Add to cart
           </button>
         </div>

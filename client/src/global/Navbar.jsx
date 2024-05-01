@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useSelector,useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { logoutUser } from '../store/authSlice';
+import { fetchCart } from '../store/cartSlice';
 
 const Navbar = () => {
     // reading cart value from store
-    const item=useSelector((state)=>state.cart)
+    const {items}=useSelector((state)=>state.cart)
     const {data:user}=useSelector((state)=>state.auth)
     const dispatch=useDispatch();
     const navigate=useNavigate();
@@ -15,6 +16,11 @@ const Navbar = () => {
         localStorage.removeItem('token')
         navigate('/login')
     }
+
+    // refresh garda cart length 0 hune vayeko le server bata fetch garera length render gareko
+    useEffect(()=>{
+        dispatch(fetchCart())
+    },[])
 
 
   return (
@@ -38,19 +44,19 @@ const Navbar = () => {
                     <div className="text-gray-600 lg:pr-4">
                         <ul className="space-y-6 tracking-wide font-medium text-sm md:flex md:space-y-0">
                             <li>
-                                <a href="#" className="block md:px-4 transition hover:text-yellow-700">
+                                <p href="#" className="block md:px-4 transition hover:text-yellow-700">
 <span>I've a restaurant</span>
-                                </a>
+                                </p>
                             </li>
                             <li>
-                                <a href="#" className="block md:px-4 transition hover:text-yellow-700">
+                                <p href="#" className="block md:px-4 transition hover:text-yellow-700">
 <span>Wishlist</span>
-                                </a>
+                                </p>
                             </li>
                             <li>
-                                <a href="#" className="block md:px-4 transition hover:text-yellow-700">
-<Link to={'/cart'}>Cart <sup>{item.length}</sup></Link >
-                                </a>
+                                <p href="#" className="block md:px-4 transition hover:text-yellow-700">
+<Link to={'/cart'}>Cart <sup>{items.length}</sup></Link >
+                                </p>
                             </li>
                         </ul>
                     </div>

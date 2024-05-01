@@ -27,7 +27,7 @@ exports.addToCart=async(req,res)=>{
 
     // cart item already exist xa vne quantity matrai increase garne . xaina vne item add garne by default quantity 1 hunxa
     if(existCartItem){
-        existCartItem +=1
+        existCartItem.quantity +=1
     }
     else{
         user.cart.push({
@@ -52,7 +52,7 @@ exports.getMyAllCart=async(req,res)=>{
     const userId=req.user[0]._id;
     // userModel.findById(userId) yesle user maa vako sabai data dinx hamilai cart ko data matrai chahiyeko x cart vitra foreign key xa so populate use gareko so we can get data of foreign key
     const user=await userModel.findById(userId).populate({
-        path:"cart",
+        path:"cart.product",
         select:['-productStatus','-__v']
     })
     

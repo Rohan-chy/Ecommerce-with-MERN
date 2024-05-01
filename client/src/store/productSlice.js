@@ -32,6 +32,19 @@ export function fetchProducts(){
             dispatch(setProduct(res.data.products))
             dispatch(setStatus(STATUS.SUCCESS))
         } catch (error) {
+           console.log("product fetched error:",error);
+           dispatch(setStatus(STATUS.ERROR)) 
+        }
+    }
+}
+export function fetchSingleProduct(productId){
+    return async function fetchSingleProductThunk(dispatch,getState){
+        dispatch(setStatus(STATUS.LOADING))
+        try {
+            const res=await API.get(`/product/${productId}`)
+            dispatch(setProduct(res.data.product))
+            dispatch(setStatus(STATUS.SUCCESS))
+        } catch (error) {
            console.log("redux data fetched error:",error);
            dispatch(setStatus(STATUS.ERROR)) 
         }

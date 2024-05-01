@@ -4,8 +4,9 @@ const exceptionalHandling = require('../utils/exceptionalHandling');
 
 const router=require('express').Router()
 
+router.route('/cart').get(isAuthenticated,exceptionalHandling(getMyAllCart))
+
 router.route('/cart/:id').post(isAuthenticated,exceptionalHandling(addToCart)).delete(isAuthenticated,exceptionalHandling(deleteItemFromCart))
 
-router.route('/cart').get(isAuthenticated,exceptionalHandling(getMyAllCart))
 
 module.exports=router;
