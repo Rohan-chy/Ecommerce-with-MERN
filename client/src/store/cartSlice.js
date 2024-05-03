@@ -24,11 +24,15 @@ const cartSlice=createSlice({
                 // product vetiyo vne tyo index maa quantity update gardine
                 state.items[index].quantity=action.payload.quantity;
             }
+        },
+        deleteItem(state,action){
+            const index=state.items.findIndex((item)=>item.product._id===action.payload.productId)
+            state.items.splice(index,1)
         }
     }
 })
 
-export const {setItem,setCartStatus,updateItem}=cartSlice.actions;
+export const {setItem,setCartStatus,updateItem,deleteItem}=cartSlice.actions;
 
 export default cartSlice.reducer;
 
@@ -71,5 +75,19 @@ export function updateCart(productId,quantity){
             console.log("cart fetched error:",error)
             dispatch(setCartStatus(STATUS.ERROR))
         } 
+    }
+}
+
+export function deleteCart(productId){
+    return async function deleteCartThunk(dispatch){
+        dispatch(setCartStatus(STATUS.LOADING))
+        try {
+            const res=await AunthenticatedAPI.delete(`/cart/${productId}`)
+            dispatch(deleteItem({productId}))
+            dispatch(setCartStatus(STATUS.SUCCESS))
+        } catch (error) {
+            console.log("cart fetched error:",error)
+            dispatch(setCartStatus(STATUS.ERROR))
+        }
     }
 }

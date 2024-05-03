@@ -85,7 +85,7 @@ exports.deleteItemFromCart=async(req,res)=>{
     // user maa xa cart so user fetch gareko
     const user=await userModel.findById(userId)
 
-    user.cart=user.cart.filter((pId)=>pId != productId)
+    user.cart=user.cart.filter((item)=>item.product != productId)
     await user.save();
 
     res.status(200).json({
