@@ -2,9 +2,9 @@ const orderModel = require("../../model/orderModel");
 
 exports.createOrder=async(req,res)=>{
     const userId=req.user[0]._id;
-    const{items,totalAmount,shippingAddress,paymentDetails}=req.body;
+    const{items,totalAmount,shippingAddress,paymentDetails,phoneNumber}=req.body;
 
-    if(items.length==0){
+    if(!items.length > 0){
         return res.status(400).json({
             message:"please provide items"
         })
@@ -25,17 +25,24 @@ exports.createOrder=async(req,res)=>{
             message:"please provide shippingAddress"
         })
     }
+    if(!phoneNumber){
+        return res.status(400).json({
+            message:"please provide phoneNumber"
+        })
+    }
 
-    await orderModel.create({
+    const orderData=await orderModel.create({
         userId,
         items,
         totalAmount,
         shippingAddress,
-        paymentDetails
+        paymentDetails,
+        phoneNumber
     })
 
     res.status(200).json({
-        message:"items ordered successfully"
+        message:"items ordered successfully",
+        data:orderData
     })
 }
 

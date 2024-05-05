@@ -11,6 +11,7 @@ import Cart from './pages/Cart'
 import RegistrationForm from './pages/RegistrationForm'
 import LoginForm from './pages/LoginForm'
 import ProductDetails from './pages/productDetails/ProductDetails'
+import CheckOut from './pages/CheckOut'
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
           <Route path='/register' element={<RegistrationForm/>}/>
           <Route path='/login' element={<LoginForm/>}/>
           <Route path='/productdetails/:id' element={<ProductDetails/>}/>
+          <Route path='/checkout' element={<CheckOut/>}/>
         </Routes>
       
       </BrowserRouter>

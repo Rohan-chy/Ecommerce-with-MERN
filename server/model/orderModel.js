@@ -8,7 +8,7 @@ const orderSchema=new mongoose.Schema({
     },
     items:[{
         quantity:{type:Number, required:true},
-        productId:{
+        product:{
             type:mongoose.Schema.Types.ObjectId,
             ref:"Product",
             required:true
@@ -20,6 +20,10 @@ const orderSchema=new mongoose.Schema({
     },
     shippingAddress:{
         type:String,
+        required:true
+    },
+    phoneNumber:{
+        type:Number,
         required:true
     },
     orderStatus:{
