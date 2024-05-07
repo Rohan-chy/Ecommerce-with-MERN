@@ -32,6 +32,7 @@ const orderSchema=new mongoose.Schema({
         default:"pending"
     },
     paymentDetails:{
+        pidx:{type:String},
         method:{type:String,enum:['COD','Khalti']},
         paymentStatus:{type:String,enum:['paid','unpaid','pending'],default:"pending"}
     }
@@ -39,4 +40,4 @@ const orderSchema=new mongoose.Schema({
     timestamps:true
 })
 
-module.exports=mongoose.model('OderModel',orderSchema)
+module.exports=mongoose.model('OrderModel',orderSchema)

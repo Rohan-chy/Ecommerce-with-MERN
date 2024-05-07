@@ -6,6 +6,7 @@ const adminUserRoute=require('./routes/adminUserRoute')
 const userReviewRoute=require('./routes/userReviewRoute')
 const cartRoute=require('./routes/cartRoute')
 const orderRoute=require('./routes/orderRoute')
+const paymentUserRoute=require('./routes/paymentUserRoute')
 
 var cors = require('cors')
 const app=express()
@@ -47,6 +48,9 @@ app.use('',cartRoute)
 
 //order route
 app.use('',orderRoute)
+
+//user payment route
+app.use('',paymentUserRoute)
 
 app.listen(process.env.PORT,()=>{
     console.log(`server startd at port ${process.env.PORT}`)
