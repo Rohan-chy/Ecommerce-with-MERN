@@ -9,10 +9,23 @@ exports.inititateKhaltiPayment=async(req,res)=>{
         })
     }
 
+    const orderData=await orderModel.findById(orderId);
+    if(!orderData){
+        return res.status(400).json({
+            message:"no order found with that id"
+        })
+    }
+
+    if(orderData.totalAmount !==amount){
+        return res.status(400).json({
+            message:"amount must be equal to total amount"
+        })
+    }
+
     const data={
-        return_url:`${process.env.SERVER_URL}/payment/success`,
+        return_url:`${process.env.CLIENT_URL}/payment/success`,
         website_url:process.env.SERVER_URL,
-        amount:amount,
+        amount:amount*100,
         purchase_order_id:orderId,
         purchase_order_name:`ORDER_NAME ${orderId}`
     }
@@ -28,11 +41,14 @@ exports.inititateKhaltiPayment=async(req,res)=>{
     await orderDetails.save();
 
     console.log(response)
-    res.redirect(response.data.payment_url)
+    res.status(200).json({
+        message:"payment successful",
+        paymentUrl:response.data.payment_url
+    })
 }
 
 exports.verifyPIDX=async(req,res)=>{
-    const pidx=req.query.pidx;
+    const pidx=req.body.pidx;
     const response=await axios.post('https://a.khalti.com/api/v2/epayment/lookup/',{pidx},{
         headers:{
             'Authorization': 'key 2a30ca72d2f54a439c6d5dbcdd5297d4'
@@ -50,8 +66,12 @@ exports.verifyPIDX=async(req,res)=>{
         order[0].paymentDetails.paymentStatus='paid';
         await order[0].save();
 
+        res.status(200).json({
+            message:"payment verification success"
+        })
+
         // notify to frontend
-        res.redirect(process.env.SERVER_URL)
+        // res.redirect(process.env.SERVER_URL)
     }
     else{
         res.redirect(`${process.env.SERVER_URL}/error`)

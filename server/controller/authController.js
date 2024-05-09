@@ -57,7 +57,6 @@ exports.loginUser=async(req,res)=>{
     if(isTrue){
 
         const token=jwt.sign({id:registeredData[0]._id},process.env.SECRET_KEY,{expiresIn:'10d'}) //first argument is payload i.e kun data lukaune, second parameter secret key to decrypt token and third parameter is expiry time
-
         res.status(200).json({
             message:"login success",
             token:token,

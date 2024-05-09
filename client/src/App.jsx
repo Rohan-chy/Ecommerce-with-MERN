@@ -12,6 +12,8 @@ import RegistrationForm from './pages/RegistrationForm'
 import LoginForm from './pages/LoginForm'
 import ProductDetails from './pages/productDetails/ProductDetails'
 import CheckOut from './pages/CheckOut'
+import KhaltiSuccess from './pages/KhaltiSuccess'
+import StudentDetails from './pages/StudentDetails'
 
 function App() {
 
@@ -26,6 +28,8 @@ function App() {
           <Route path='/login' element={<LoginForm/>}/>
           <Route path='/productdetails/:id' element={<ProductDetails/>}/>
           <Route path='/checkout' element={<CheckOut/>}/>
+          <Route path='/payment/success' element={<KhaltiSuccess/>}/>
+          <Route path='/studentdetails' element={<StudentDetails/>}/>
         </Routes>
       
       </BrowserRouter>

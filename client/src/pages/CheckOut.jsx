@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import {useNavigate} from 'react-router-dom'
 import {useForm} from 'react-hook-form'
 import { createOrder } from '../store/orderSlice'
+import { STATUS } from '../global/Status'
+import { AunthenticatedAPI } from '../http'
 
 const CheckOut = () => {
     const {items}=useSelector((state)=>state.cart)
-    const {data}=useSelector((state)=>state.order)
+    const {data,status}=useSelector((state)=>state.order)
     const {register,handleSubmit,formState}=useForm()
     const [paymentMethod,setPaymentMethod]=useState('COD')
     console.log(data)
@@ -19,6 +22,7 @@ const CheckOut = () => {
     }
 
     const dispatch=useDispatch()
+    const navigate=useNavigate()
 
     const handleOrder=(data)=>{
        const {phoneNumber,shippingAddress}=data;
@@ -33,6 +37,36 @@ const CheckOut = () => {
         }
        }
        dispatch(createOrder(orderDetails))
+    }
+
+    const khaltiPayment=()=>{
+      const currentData=data[data.length-1];
+
+      if(status===STATUS.SUCCESS && paymentMethod==='COD'){
+        return alert('order placed successfully')
+      }
+
+      if(status===STATUS.SUCCESS && paymentMethod==='Khalti'){
+        const {totalAmount,_id}=currentData;
+        handleKhalti(totalAmount,_id)
+      }
+
+    }
+
+    useEffect(()=>{
+      khaltiPayment()
+    },[data,status])
+
+    const handleKhalti=async(totalAmount,_id)=>{
+      try {
+        const res=await AunthenticatedAPI.post('/payment',{amount:totalAmount,orderId:_id})
+         console.log("inititate khalti payment",res.data)
+         if(res.status===200){
+          window.location.href=res.data.paymentUrl
+         }
+      } catch (error) {
+        console.log("khalti initiation error",error)
+      }
     }
   return (
     <>
@@ -162,7 +196,13 @@ const CheckOut = () => {
         <p className="text-2xl font-semibold text-gray-900">Rs.{totalAmount}</p>
       </div>
     </div>
+
+    {
+      paymentMethod=='COD'?
     <button className="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white">Place Order</button>
+      :
+    <button className="mt-4 mb-8 w-full rounded-md bg-[purple] px-6 py-3 font-medium text-white">Pay with Khalti</button>
+    }
       </form>
   </div>
 </div>

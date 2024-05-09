@@ -28,7 +28,8 @@ const LoginForm = () => {
     e.preventDefault();
     // Handle form submission here
     dispatch(loginUser(formData))
-    navigate('/')
+    window.location.href='/'
+    // navigate('/')
 
     // if(message==='login success'){
     //      navigate('/')
