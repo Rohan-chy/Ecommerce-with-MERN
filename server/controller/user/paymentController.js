@@ -1,5 +1,6 @@
 const {default:axios}=require('axios');
 const orderModel = require('../../model/orderModel');
+const userModel = require('../../model/userModel');
 
 exports.inititateKhaltiPayment=async(req,res)=>{
     const {amount,orderId}=req.body;
@@ -49,22 +50,25 @@ exports.inititateKhaltiPayment=async(req,res)=>{
 
 exports.verifyPIDX=async(req,res)=>{
     const pidx=req.body.pidx;
+    const userId = req.user[0]._id;
+
     const response=await axios.post('https://a.khalti.com/api/v2/epayment/lookup/',{pidx},{
         headers:{
             'Authorization': 'key 2a30ca72d2f54a439c6d5dbcdd5297d4'
         }
     })
-    console.log(response,'response of lookup')
 
     if(response.data.status==='Completed'){
         //database modification
         let order=await orderModel.find({'paymentDetails.pidx':pidx})
-        console.log('order detail info',order)
-        console.log('payment detail info',order[0].paymentDetails)
 
         order[0].paymentDetails.method='Khalti'
         order[0].paymentDetails.paymentStatus='paid';
         await order[0].save();
+
+        const userData=await userModel.findById(userId);
+        userData.cart=[];
+        await userData.save();
 
         res.status(200).json({
             message:"payment verification success"

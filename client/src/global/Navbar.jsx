@@ -54,9 +54,9 @@ const Navbar = () => {
                                 </p>
                             </li>
                             <li>
-                                <p href="#" className="block md:px-4 transition hover:text-yellow-700">
-<Link to={'/cart'}>Cart <sup>{items.length}</sup></Link >
-                                </p>
+                                {items && items.length > 0 && <p href="#" className="block md:px-4 transition hover:text-yellow-700">
+                                    <Link to={'/cart'}>Cart <sup>{items.length}</sup></Link >
+                                </p>}
                             </li>
                         </ul>
                     </div>
