@@ -6,12 +6,17 @@ const MyOrders = () => {
     const dispatch=useDispatch();
     const {orders}=useSelector((state)=>state.order)
     const [orderStat,setOrderStatus]=useState('all')
+    const [search,setSearch]=useState('')
+    console.log(orders)
 
     useEffect(()=>{
         dispatch(fetchOrder())
     },[])
 
-    const filteredOrders=orderStat=='all'? orders:orders.filter((order)=>order.orderStatus==orderStat)
+    // const filteredOrders=orderStat=='all'? orders:orders.filter((order)=>order.orderStatus==orderStat)
+    const filteredOrders=orders.filter((order)=>orderStat==='all'|| order.orderStatus===orderStat).filter((order)=>
+        order._id.toLowerCase().includes(search.toLocaleLowerCase()) ||
+        order.paymentDetails.method.toLowerCase().includes(search.toLowerCase()))
   return (
 <div className="antialiased font-sans bg-gray-200 pt-5">
     <div className="container mx-auto px-4 sm:px-8">
@@ -47,7 +52,7 @@ const MyOrders = () => {
                             </path>
                         </svg>
                     </span>
-                    <input placeholder="Search"
+                    <input placeholder="Search" onChange={(e)=>setSearch(e.target.value)}
                         className="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
                 </div>
             </div>
