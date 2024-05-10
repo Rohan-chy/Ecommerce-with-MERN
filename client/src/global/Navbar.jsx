@@ -44,13 +44,13 @@ const Navbar = () => {
                     <div className="text-gray-600 lg:pr-4">
                         <ul className="space-y-6 tracking-wide font-medium text-sm md:flex md:space-y-0">
                             <li>
-                                <p href="#" className="block md:px-4 transition hover:text-yellow-700">
-<span>I've a restaurant</span>
-                                </p>
+                                <Link to="/profile" className="block md:px-4 transition hover:text-yellow-700">
+                                    <span>Profile</span>
+                                </Link>
                             </li>
                             <li>
                                 <p href="#" className="block md:px-4 transition hover:text-yellow-700">
-<span>Wishlist</span>
+                                    <span>Wishlist</span>
                                 </p>
                             </li>
                             <li>
@@ -71,13 +71,13 @@ const Navbar = () => {
                             </Link>
                         </button>
                         <button type="button" title="Start buying" className="w-full py-3 px-6 text-center rounded-full transition bg-yellow-300 hover:bg-yellow-100 active:bg-yellow-400 focus:bg-yellow-300 sm:w-max">
-                            <span className="block text-yellow-900 font-semibold text-sm">
-                                <Link to={'/login'}>Login</Link>
-                            </span>
+                            <Link to={'/login'} className="block text-yellow-900 font-semibold text-sm">
+                                Login
+                            </Link>
                         </button>
                         </>:
-                        <button type="button" title="Start buying" className="w-full py-3 px-6 text-center rounded-full transition bg-yellow-300 hover:bg-yellow-100 active:bg-yellow-400 focus:bg-yellow-300 sm:w-max">
-                        <span className="block text-yellow-900 font-semibold text-sm" onClick={logOut}>
+                        <button type="button" onClick={logOut} title="Start buying" className="w-full py-3 px-6 text-center rounded-full transition bg-yellow-300 hover:bg-yellow-100 active:bg-yellow-400 focus:bg-yellow-300 sm:w-max">
+                        <span className="block text-yellow-900 font-semibold text-sm" >
                             Logout
                         </span>
                     </button>

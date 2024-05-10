@@ -2,6 +2,7 @@ import React, { useEffect} from 'react'
 import { useDispatch,useSelector } from 'react-redux';
 import { fetchProducts } from '../store/productSlice';
 import { Link } from 'react-router-dom';
+import Loader from '../global/Loader';
 
 const Home = () => {
     const dispatch=useDispatch();
@@ -16,7 +17,7 @@ const Home = () => {
     // }
 
     if(status=='loading'){
-      return <div>Loading....</div>
+      return <Loader/>
     }
 
     if(status=='error'){

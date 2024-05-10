@@ -5,6 +5,7 @@ import {useForm} from 'react-hook-form'
 import { createOrder } from '../store/orderSlice'
 import { STATUS } from '../global/Status'
 import { AunthenticatedAPI } from '../http'
+import { clearItem } from '../store/cartSlice'
 
 const CheckOut = () => {
     const {items}=useSelector((state)=>state.cart)
@@ -24,6 +25,7 @@ const CheckOut = () => {
     const dispatch=useDispatch()
     const navigate=useNavigate()
 
+    // for COD
     const handleOrder=(data)=>{
        const {phoneNumber,shippingAddress}=data;
        
@@ -37,8 +39,11 @@ const CheckOut = () => {
         }
        }
        dispatch(createOrder(orderDetails))
+       dispatch(clearItem())
+       navigate('/')
     }
 
+    // for khalti payment gateway
     const khaltiPayment=()=>{
       const currentData=data[data.length-1];
 

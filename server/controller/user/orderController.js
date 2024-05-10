@@ -1,4 +1,5 @@
 const orderModel = require("../../model/orderModel");
+const userModel = require("../../model/userModel");
 
 exports.createOrder=async(req,res)=>{
     const userId=req.user[0]._id;
@@ -39,6 +40,11 @@ exports.createOrder=async(req,res)=>{
         paymentDetails,
         phoneNumber
     })
+
+
+    const userData=await userModel.findById(userId)
+    userData.cart=[]
+    await userData.save()
 
     res.status(200).json({
         message:"items ordered successfully",

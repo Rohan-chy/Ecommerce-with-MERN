@@ -14,6 +14,8 @@ import ProductDetails from './pages/productDetails/ProductDetails'
 import CheckOut from './pages/CheckOut'
 import KhaltiSuccess from './pages/KhaltiSuccess'
 import StudentDetails from './pages/StudentDetails'
+import Profile from './pages/profile/Profile'
+import MyOrders from './pages/myOrders/MyOrders'
 
 function App() {
 
@@ -30,6 +32,8 @@ function App() {
           <Route path='/checkout' element={<CheckOut/>}/>
           <Route path='/payment/success' element={<KhaltiSuccess/>}/>
           <Route path='/studentdetails' element={<StudentDetails/>}/>
+          <Route path='/profile' element={<Profile/>}/>
+          <Route path='/myorders' element={<MyOrders/>}/>
         </Routes>
       
       </BrowserRouter>

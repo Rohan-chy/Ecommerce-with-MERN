@@ -63,6 +63,8 @@ export function loginUser(data){
                 dispatch(setUsers(res.data.data))
                 localStorage.setItem('token',res.data.token)
                 dispatch(setMessage(res.data.message))
+                window.location.href='/'
+
             }
             dispatch(setUserStatus(STATUS.SUCCESS))
 

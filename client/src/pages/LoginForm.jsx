@@ -9,7 +9,6 @@ const LoginForm = () => {
     const navigate=useNavigate()
 
     const {status,message}=useSelector((state)=>state.auth)
-    console.log(message)
 
   const [formData, setFormData] = useState({
     userEmail: '',
@@ -28,7 +27,6 @@ const LoginForm = () => {
     e.preventDefault();
     // Handle form submission here
     dispatch(loginUser(formData))
-    window.location.href='/'
     // navigate('/')
 
     // if(message==='login success'){

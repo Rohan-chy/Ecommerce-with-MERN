@@ -7,7 +7,8 @@ const orderSlice=createSlice({
     name:'order',
     initialState:{
         data:[],
-        status:STATUS.SUCCESS
+        status:STATUS.SUCCESS,
+        orders:[]
     },
     reducers:{
         setOrder(state,action){
@@ -15,11 +16,14 @@ const orderSlice=createSlice({
         },
         setStatus(state,action){
             state.status=action.payload
+        },
+        setOrders(state,action){
+            state.orders=action.payload
         }
     }
 })
 
-export const {setOrder,setStatus}=orderSlice.actions
+export const {setOrder,setStatus,setOrders}=orderSlice.actions
 
 export default orderSlice.reducer;
 
@@ -33,6 +37,19 @@ export function createOrder(data){
             dispatch(setStatus(STATUS.SUCCESS))
         } catch (error) {
            console.log("order created error:",error);
+           dispatch(setStatus(STATUS.ERROR)) 
+        }
+    }
+}
+export function fetchOrder(){
+    return async function fetchOrderThunk(dispatch){
+        dispatch(setStatus(STATUS.LOADING))
+        try {
+            const res=await AunthenticatedAPI.get('/orders')
+            dispatch(setOrders(res.data.data))
+            dispatch(setStatus(STATUS.SUCCESS))
+        } catch (error) {
+           console.log("order fetched error:",error);
            dispatch(setStatus(STATUS.ERROR)) 
         }
     }
