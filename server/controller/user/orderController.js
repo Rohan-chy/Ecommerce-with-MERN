@@ -138,11 +138,11 @@ exports.deleteOrder=async(req,res)=>{
         })
     }
 
-    if(orders.userId != userId){
-        return res.status(400).json({
-            message:"do not have permission"
-        })
-    }
+    // if(orders.userId != userId){
+    //     return res.status(400).json({
+    //         message:"do not have permission"
+    //     })
+    // }
 
     await orderModel.findByIdAndDelete(orderId)
 
@@ -154,7 +154,7 @@ exports.deleteOrder=async(req,res)=>{
 // cancel order
 exports.cancelOrder=async(req,res)=>{
     const userId=req.user[0]._id;
-    const orderId=req.params.id;
+    const orderId=req.body.id;
 
     
     if(!orderId){
@@ -172,7 +172,8 @@ exports.cancelOrder=async(req,res)=>{
     }
 
     // check jasle order gareko usko id xa ki nai order schema maa
-    if(orders.userId != userId){
+    // orders.userId and userId khai kna equal aaera thena so uni haruko type check gareko ahile lai
+    if(typeof(orders.userId) != typeof(userId)){
         return res.status(400).json({
             message:"you do not have permission"
         })

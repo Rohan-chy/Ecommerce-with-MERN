@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import {Link} from 'react-router-dom'
 import { fetchOrder } from '../../store/orderSlice';
 
 const MyOrders = () => {
@@ -8,7 +9,6 @@ const MyOrders = () => {
     const [orderStat,setOrderStatus]=useState('all')
     const [search,setSearch]=useState('')
     const [date,setDate]=useState('')
-    console.log(orders)
 
     useEffect(()=>{
         dispatch(fetchOrder())
@@ -107,11 +107,13 @@ const MyOrders = () => {
                                                 src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
                                                 alt="" />
                                         </div>
-                                        <div className="ml-3">
-                                            <p className="text-gray-900 whitespace-no-wrap">
-                                                {order._id}
-                                            </p>
-                                        </div>
+                                       <Link to={`/myorders/${order._id}`}>
+                                             <div className="ml-3">
+                                                <p className="text-[blue] whitespace-no-wrap underline">
+                                                    {order._id}
+                                                </p>
+                                            </div>
+                                       </Link>
                                     </div>
                                 </td>
                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
