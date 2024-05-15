@@ -4,7 +4,7 @@ const orderModel = require("../../model/orderModel");
 exports.getAllOrders=async(req,res)=>{
     const userId=req.user[0]._id;
     const orders=await orderModel.find().populate({
-        path:'items.productId',  //items field ko pni vitra ko product details chahiyeko so items.productId
+        path:'items.product',  //items field ko pni vitra ko product details chahiyeko so items.productId
         model:'Product',
         select:'-productQuantity -createdAt -updatedAt -__v'
     })
