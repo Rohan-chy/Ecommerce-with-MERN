@@ -2,9 +2,9 @@ import React from "react";
 
 // Admin Imports
 import MainDashboard from "views/admin/default";
-import Orders from "views/admin/marketplace";
+import Orders from "views/admin/orders";
 import Profile from "views/admin/profile";
-import DataTables from "views/admin/tables";
+import Users from "views/admin/users";
 
 // Icon Imports
 import {
@@ -35,7 +35,7 @@ const routes = [
     layout: "/admin",
     icon: <MdBarChart className="h-6 w-6" />,
     path: "users",
-    component: <DataTables />,
+    component: <Users />,
   },
   {
     name: "Products",

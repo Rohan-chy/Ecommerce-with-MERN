@@ -5,8 +5,8 @@ const exceptionalHandling = require('../utils/exceptionalHandling');
 
 const router=require('express').Router();
 
-router.route('/users').get(isAuthenticated,restrictRole('admin'),exceptionalHandling(adminUser))
+router.route('/admin/users').get(isAuthenticated,restrictRole('admin'),exceptionalHandling(adminUser))
 
-router.route('/users/:id').delete(isAuthenticated,restrictRole('admin'),exceptionalHandling(deleteUser))
+router.route('/admin/users/:id').delete(isAuthenticated,restrictRole('admin'),exceptionalHandling(deleteUser))
 
 module.exports=router;
