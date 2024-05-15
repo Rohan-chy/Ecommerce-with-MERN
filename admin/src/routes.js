@@ -3,7 +3,7 @@ import React from "react";
 // Admin Imports
 import MainDashboard from "views/admin/default";
 import Orders from "views/admin/orders";
-import Profile from "views/admin/profile";
+import Products from "views/admin/product";
 import Users from "views/admin/users";
 
 // Icon Imports
@@ -42,7 +42,7 @@ const routes = [
     layout: "/admin",
     path: "products",
     icon: <MdPerson className="h-6 w-6" />,
-    component: <Profile />,
+    component: <Products />,
   },
 ];
 export default routes;
