@@ -19,11 +19,17 @@ const orderSlice=createSlice({
         deleteItem(state,action){
             const index=state.orders.findIndex((order)=>order._id===action.payload.orderId)
             state.orders.splice(index,1)  
+        },
+        updateItem(state,action){
+            const index=state.orders.findIndex((order)=>order._id===action.payload.orderId)
+            if(index!==-1){
+                state.orders[index].orderStatus=action.payload.orderStatus;
+            }
         }
     }
 })
 
-export const {setStatus,setOrders,deleteItem}=orderSlice.actions
+export const {setStatus,setOrders,deleteItem,updateItem}=orderSlice.actions
 
 export default orderSlice.reducer;
 
@@ -54,6 +60,22 @@ export function orderDelete(orderId){
 
         } catch (error) {
             console.log('admin order delete error',error)
+            dispatch(setStatus(STATUS.ERROR))
+        }
+    }
+}
+export function orderUpdate(orderId,orderStatus){
+    return async function orderUpdateThunk(dispatch){
+        dispatch(setStatus(STATUS.LOADING))
+        try {
+            const res=await AunthenticatedAPI.patch(`/admin/orders/${orderId}`,{orderStatus})
+            if(res.status===200){
+                dispatch(updateItem({orderId,orderStatus}))
+                dispatch(setStatus(STATUS.SUCCESS))
+            }
+
+        } catch (error) {
+            console.log('admin order update error',error)
             dispatch(setStatus(STATUS.ERROR))
         }
     }

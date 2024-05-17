@@ -7,7 +7,7 @@ exports.getAllOrders=async(req,res)=>{
         path:'items.product',  //items field ko pni vitra ko product details chahiyeko so items.productId
         model:'Product',
         select:'-productQuantity -createdAt -updatedAt -__v'
-    })
+    }).populate('userId')
 
     if(orders.length==0){
         return res.status(400).json({
@@ -47,7 +47,7 @@ exports.getSingleOrder=async(req,res)=>{
 
 // update order status
 exports.updateOrderStatus=async(req,res)=>{
-    const orderId=req.params;
+    const {orderId}=req.params;
     const {orderStatus}=req.body;
 
     const status=['pending','delivered','cancelled','on the way','preparation']
@@ -64,7 +64,7 @@ exports.updateOrderStatus=async(req,res)=>{
         })
     }
 
-    if(!status.includes(orderStatus.toLowercase())){
+    if(!status.includes(orderStatus.toLowerCase())){
         return res.status(400).json({
             message:"please provide valid status"
         })

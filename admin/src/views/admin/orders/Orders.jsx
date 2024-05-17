@@ -118,7 +118,7 @@ const Orders = () => {
                                                 src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
                                                 alt="" />
                                         </div>
-                                       <Link to={`/orders/${order._id}`}>
+                                       <Link to={`/admin/orders/${order._id}`}>
                                              <div className="ml-3">
                                                 <p className="text-[blue] whitespace-no-wrap underline">
                                                     {order._id}
