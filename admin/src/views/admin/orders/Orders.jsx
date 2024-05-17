@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {Link} from 'react-router-dom'
+import { orderDelete } from 'store/orderSlice';
 import { fetchOrder } from 'store/orderSlice';
 
 const Orders = () => {
@@ -20,8 +21,13 @@ const Orders = () => {
           order._id.toLowerCase().includes(search.toLocaleLowerCase()) ||
           order.paymentDetails.method.toLowerCase().includes(search.toLowerCase()))
         .filter((order)=>date===''|| new Date(order.createdAt).toLocaleDateString()===new Date(date).toLocaleDateString())
+
+        const deleteOrder = (orderId) => {
+            dispatch(orderDelete(orderId)); // Pass orderId directly
+        }
+        
   return (
-<div className="antialiased font-sans bg-gray-200 pt-5">
+<div className="antialiased font-sans bg-gray-200 pt-5 ">
     <div className="container mx-auto px-4 sm:px-8">
         <div className="py-8">
             <div>
@@ -70,9 +76,9 @@ const Orders = () => {
                         className="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
                 </div>
             </div>
-            <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-                <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
-                    <table className="min-w-full leading-normal">
+            <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto max-h-screen overflow-auto">
+                <div className="inline-block min-w-full shadow rounded-lg  overflow-hidden">
+                    <table className="min-w-full leading-normal ">
                         <thead>
                             <tr>
                                 <th
@@ -95,9 +101,13 @@ const Orders = () => {
                                     className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     Ordered At
                                 </th>
+                                <th
+                                    className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Action
+                                </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody >
                             {
                                 filteredOrders && filteredOrders.length>0 && filteredOrders.map((order)=>(
                                 <tr key={order._id}>
@@ -108,7 +118,7 @@ const Orders = () => {
                                                 src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
                                                 alt="" />
                                         </div>
-                                       <Link to={`/myorders/${order._id}`}>
+                                       <Link to={`/orders/${order._id}`}>
                                              <div className="ml-3">
                                                 <p className="text-[blue] whitespace-no-wrap underline">
                                                     {order._id}
@@ -131,13 +141,18 @@ const Orders = () => {
                                         className={`relative inline-block px-3 py-1 font-semibold ${order.paymentDetails.paymentStatus==='paid'?'text-green-900':'text-red-500'} leading-tight`}>
                                         <span aria-hidden
                                             className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                        <span className="relative">{order.paymentDetails.paymentStatus}[{order.paymentDetails.method}]</span>
+                                        <span className="relative">{order.paymentDetails.paymentStatus}({order.paymentDetails.method})</span>
                                     </span>
                                 </td>
                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                                     <p className="text-gray-900 whitespace-no-wrap">
                                         {new Date(order.createdAt).toLocaleDateString()}
                                     </p>
+                                </td>
+                                <td className=" text-sm text-center bg-red-500 ">
+                                    <button onClick={()=>deleteOrder(order._id)} className=" text-white whitespace-no-wrap ">
+                                        Delete
+                                    </button>
                                 </td>
                             </tr>
                                 ))

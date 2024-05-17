@@ -19,7 +19,7 @@ router.route('/orders/:id')
 
 // for admin
 router.route('/admin/orders').get(isAuthenticated,restrictRole('admin'),exceptionalHandling(getAllOrders))
-router.route('/admin/orders/:id')
+router.route('/admin/orders/:orderId')
 .get(isAuthenticated,restrictRole('admin'),exceptionalHandling(getSingleOrder))
 .patch(isAuthenticated,restrictRole('admin'),exceptionalHandling(updateOrderStatus))
 .delete(isAuthenticated,restrictRole('admin'),exceptionalHandling(deleteOrderAdmin))

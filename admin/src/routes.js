@@ -2,7 +2,7 @@ import React from "react";
 
 // Admin Imports
 import MainDashboard from "views/admin/default";
-import Orders from "views/admin/orders";
+import Orders from "views/admin/orders/Orders";
 import Products from "views/admin/product";
 import Users from "views/admin/users";
 

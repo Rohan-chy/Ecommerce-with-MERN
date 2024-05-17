@@ -91,7 +91,7 @@ exports.updateOrderStatus=async(req,res)=>{
 
 //delete order
 exports.deleteOrderAdmin=async(req,res)=>{
-    const orderId=req.params;
+    const {orderId}=req.params;
 
      if(!orderId){
         return res.status(400).json({
