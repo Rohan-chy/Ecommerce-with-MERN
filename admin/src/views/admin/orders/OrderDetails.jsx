@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom'
+import { paymentUpdate } from 'store/orderSlice';
 import { orderUpdate } from 'store/orderSlice';
 import { orderDelete } from 'store/orderSlice';
 
@@ -24,7 +25,10 @@ const OrderDetails = () => {
 
   const handleOrderStatus=(e)=>{
     dispatch(orderUpdate(id,e.target.value))
-    console.log(e.target.value)
+  }
+
+  const handlePaymentStatus=(e)=>{
+    dispatch(paymentUpdate(id,e.target.value))
   }
 
   return (
@@ -130,13 +134,24 @@ const OrderDetails = () => {
               <p className="w-48 lg:w-full dark:text-gray-300 xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600">{filteredSingleOrderDetail[0]?.shippingAddress}</p>
             </div>
           </div>
-          <select onChange={handleOrderStatus} className="my-2 h-full rounded  border-2  border-blue-600 block appearance-none w-full   py-2 px-4 pr-8 leading-tight focus:outline-none ">
-                            <option value={filteredSingleOrderDetail[0]?.orderStatus}>{filteredSingleOrderDetail[0]?.orderStatus}</option>
+         <div className='my-4'>
+            <h1>Edit order status</h1>
+            <select onChange={handleOrderStatus} className=" rounded  border-2  border-blue-600 block appearance-none w-full   py-2 px-4 pr-8 leading-tight focus:outline-none ">
+                            <option value='pending'>pending</option>
                             <option value={'on the way'}>on the way</option>
                             <option value={'delivered'}>delivered</option>
                             <option value={'preparation'}>preparation</option>
                             <option value={'cancelled'}>cancelled</option>
-                        </select>
+          </select>
+         </div>
+          <div className='my-4'>
+            <h1>Edit payment status</h1>
+            <select onChange={handlePaymentStatus} className=" rounded  border-2  border-blue-600 block appearance-none w-full   py-2 px-4 pr-8 leading-tight focus:outline-none ">
+                            <option value='pending'>pending</option>
+                            <option value={'paid'}>paid</option>
+                            <option value={'unpaid'}>unpaid</option>
+          </select>
+          </div>
           <div className="flex w-full justify-center items-center md:justify-start md:items-start gap-1">
             {
               filteredSingleOrderDetail[0]?.orderStatus !=='cancelled' &&

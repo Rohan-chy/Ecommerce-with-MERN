@@ -25,11 +25,17 @@ const orderSlice=createSlice({
             if(index!==-1){
                 state.orders[index].orderStatus=action.payload.orderStatus;
             }
+        },
+        updatePayment(state,action){
+            const index=state.orders.findIndex((order)=>order._id===action.payload.orderId)
+            if(index!==-1){
+                state.orders[index].paymentDetails.paymentStatus=action.payload.paymentStatus;
+            }
         }
     }
 })
 
-export const {setStatus,setOrders,deleteItem,updateItem}=orderSlice.actions
+export const {setStatus,setOrders,deleteItem,updateItem,updatePayment}=orderSlice.actions
 
 export default orderSlice.reducer;
 
@@ -76,6 +82,22 @@ export function orderUpdate(orderId,orderStatus){
 
         } catch (error) {
             console.log('admin order update error',error)
+            dispatch(setStatus(STATUS.ERROR))
+        }
+    }
+}
+export function paymentUpdate(orderId,paymentStatus){
+    return async function paymentUpdateThunk(dispatch){
+        dispatch(setStatus(STATUS.LOADING))
+        try {
+            const res=await AunthenticatedAPI.patch(`/admin/paymentStatus/${orderId}`,{paymentStatus})
+            if(res.status===200){
+                dispatch(updatePayment({orderId,paymentStatus}))
+                dispatch(setStatus(STATUS.SUCCESS))
+            }
+
+        } catch (error) {
+            console.log('admin payment update error',error)
             dispatch(setStatus(STATUS.ERROR))
         }
     }

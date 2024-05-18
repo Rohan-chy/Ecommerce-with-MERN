@@ -88,6 +88,49 @@ exports.updateOrderStatus=async(req,res)=>{
         data:updatedStatus
     })
 }
+// update payment status
+exports.updatePaymentStatus=async(req,res)=>{
+    const {orderId}=req.params;
+    const {paymentStatus}=req.body;
+
+    const status=['pending','paid','unpaid']
+
+    if(!orderId){
+        return res.status(400).json({
+            message:'please provide order id'
+        })
+    }
+
+    if(!paymentStatus){
+        return res.status(400).json({
+            message:"please provide payment status"
+        })
+    }
+
+    if(!status.includes(paymentStatus.toLowerCase())){
+        return res.status(400).json({
+            message:"please provide valid status"
+        })
+    }
+
+    const order=await orderModel.findById(orderId);
+    if(!order){
+        return res.status(404).json({
+            message:"no data found with that id"
+        })
+    }
+
+    const updatedStatus=await orderModel.findByIdAndUpdate(orderId,{
+        'paymentDetails.paymentStatus':paymentStatus
+    },{
+        new:true
+    })
+
+    res.status(200).json({
+        message:"payment status updated successfully",
+        data:updatedStatus
+    })
+}
 
 //delete order
 exports.deleteOrderAdmin=async(req,res)=>{

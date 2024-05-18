@@ -1,4 +1,4 @@
-const { getAllOrders, getSingleOrder, updateOrderStatus, deleteOrderAdmin } = require('../controller/admin/orderController')
+const { getAllOrders, getSingleOrder, updateOrderStatus, deleteOrderAdmin, updatePaymentStatus } = require('../controller/admin/orderController')
 const { createOrder, getMyAllOrders, updateOrder, deleteOrder, cancelOrder } = require('../controller/user/orderController')
 const isAuthenticated = require('../middleware/isAuthenticated')
 const restrictRole = require('../middleware/restrictRole')
@@ -19,6 +19,7 @@ router.route('/orders/:id')
 
 // for admin
 router.route('/admin/orders').get(isAuthenticated,restrictRole('admin'),exceptionalHandling(getAllOrders))
+router.route('/admin/paymentStatus/:orderId').patch(isAuthenticated,restrictRole('admin'),exceptionalHandling(updatePaymentStatus))
 router.route('/admin/orders/:orderId')
 .get(isAuthenticated,restrictRole('admin'),exceptionalHandling(getSingleOrder))
 .patch(isAuthenticated,restrictRole('admin'),exceptionalHandling(updateOrderStatus))
