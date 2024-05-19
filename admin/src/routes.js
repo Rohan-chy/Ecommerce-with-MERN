@@ -32,12 +32,9 @@ const routes = [
     secondary: true,
   },
   {
-    name: "Orders",
     layout: "/admin",
     path: "orders/:id",
-    icon: <MdOutlineShoppingCart className="h-6 w-6" />,
     component: <OrderDetails />,
-    secondary: true,
   },
   {
     name: "Users",

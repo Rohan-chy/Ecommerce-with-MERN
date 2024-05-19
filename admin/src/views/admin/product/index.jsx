@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {Link} from 'react-router-dom'
+import { deleteProduct } from 'store/productSlice';
 import { fetchProduct } from 'store/productSlice';
 
 const Products = () => {
@@ -23,7 +24,10 @@ const Products = () => {
                     product.productName.toLowerCase().includes(search.toLowerCase()))
                 .filter((product)=>date===''|| new Date(product.createdAt).toLocaleDateString()===new Date(date).toLocaleDateString())
 
-       
+    
+    const handleProductDelete=(productId)=>{
+        dispatch(deleteProduct(productId))
+    }
   return (
 <div className="antialiased font-sans bg-gray-200 pt-5">
     <div className="container mx-auto px-4 sm:px-8">
@@ -88,6 +92,10 @@ const Products = () => {
                                     className="px-5 py-3 bproduct-b-2 bproduct-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     Created At
                                 </th>
+                                <th
+                                    className="px-5 py-3 bproduct-b-2 bproduct-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Action
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -130,6 +138,11 @@ const Products = () => {
                                 <td className="px-5 py-5 bproduct-b bproduct-gray-200 bg-white text-sm text-left">
                                     <p className="text-gray-900 whitespace-no-wrap">
                                         {new Date(product.createdAt).toLocaleDateString()}
+                                    </p>
+                                </td>
+                                <td className="px-5 py-5 bproduct-b bproduct-gray-200 bg-white text-sm text-left">
+                                    <p onClick={()=>handleProductDelete(product._id)} className="text-white bg-red-500 whitespace-no-wrap p-2 hover:opacity-80 cursor-pointer">
+                                        Delete
                                     </p>
                                 </td>
                             </tr>

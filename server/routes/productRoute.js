@@ -12,7 +12,7 @@ router.route('/product')
 .post(isAuthenticated,restrictRole('admin'),upload.single('avatar'),exceptionalHandling(adminProductController))
 .get(exceptionalHandling(getProducts));
 
-router.route('/product/:id')
+router.route('/admin/product/:id')
 .get(exceptionalHandling(singleProduct))
 .delete(isAuthenticated,restrictRole('admin'),exceptionalHandling(deleteProduct))
 .patch(isAuthenticated,restrictRole('admin'),upload.single('avatar'),exceptionalHandling(updateProduct))
