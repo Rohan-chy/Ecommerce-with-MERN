@@ -1,4 +1,5 @@
 const orderModel = require("../../model/orderModel");
+const Product = require("../../model/productModel");
 
 //get all my orders
 exports.getAllOrders=async(req,res)=>{
@@ -6,7 +7,7 @@ exports.getAllOrders=async(req,res)=>{
     const orders=await orderModel.find().populate({
         path:'items.product',  //items field ko pni vitra ko product details chahiyeko so items.productId
         model:'Product',
-        select:'-productQuantity -createdAt -updatedAt -__v'
+        select:' -createdAt -updatedAt -__v'
     }).populate('userId')
 
     if(orders.length==0){
@@ -77,15 +78,39 @@ exports.updateOrderStatus=async(req,res)=>{
         })
     }
 
-    const updatedStatus=await orderModel.findByIdAndUpdate(orderId,{
+    const updatedOrder=await orderModel.findByIdAndUpdate(orderId,{
         orderStatus:orderStatus
     },{
         new:true
+    }).populate({
+        path:"items.product",
+        model : "Product"
     })
+
+    // order ko status delivered huda inventory bata stock quantity reduce garne
+    let necessaryData
+    if(orderStatus === "delivered"){
+        // items maa products xa so items bata chahine info leko reduce garna lai
+         necessaryData = updatedOrder.items.map((item)=>{
+            return {
+                quantity : item.quantity,
+                productId : item.product._id,
+                productQuantity : item.product.productQuantity
+            }
+        })
+
+        for(var i = 0 ; i < necessaryData.length; i ++){
+            await Product.findByIdAndUpdate(necessaryData[i].productId,{
+                productQuantity : necessaryData[i].productQuantity - necessaryData[i].quantity
+            })
+        }
+
+
+    }
 
     res.status(200).json({
         message:"order status updated successfully",
-        data:updatedStatus
+        data:updatedOrder
     })
 }
 // update payment status

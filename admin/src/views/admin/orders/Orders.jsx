@@ -18,8 +18,10 @@ const Orders = () => {
     // const filteredOrders=orderStat=='all'? orders:orders.filter((order)=>order.orderStatus==orderStat)
     const filteredOrders=orders.filter((order)=>orderStat==='all'|| order.orderStatus===orderStat)
         .filter((order)=>
-          order._id.toLowerCase().includes(search.toLocaleLowerCase()) ||
-          order.paymentDetails.method.toLowerCase().includes(search.toLowerCase()))
+          order._id.toLowerCase().includes(search.toLowerCase()) ||
+          order.paymentDetails.method.toLowerCase().includes(search.toLowerCase()) ||
+          order.userId.userName.toLowerCase().includes(search.toLowerCase())
+        )
         .filter((order)=>date===''|| new Date(order.createdAt).toLocaleDateString()===new Date(date).toLocaleDateString())
 
         const deleteOrder = (orderId) => {
@@ -87,6 +89,10 @@ const Orders = () => {
                                 </th>
                                 <th
                                     className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    User name
+                                </th>
+                                <th
+                                    className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     Total Amt
                                 </th>
                                 <th
@@ -126,6 +132,9 @@ const Orders = () => {
                                             </div>
                                        </Link>
                                     </div>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+                                    <p className="text-gray-900 whitespace-no-wrap ">{order?.userId?.userName}</p>
                                 </td>
                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
                                     <p className="text-gray-900 whitespace-no-wrap ">{order.totalAmount}</p>

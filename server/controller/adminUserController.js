@@ -9,7 +9,6 @@ exports.adminUser=async(req,res)=>{
     // $ne vaneko not equal ho jasle current user bahek aru data didai xa
     // select method le field haruko data add minus garera dine garxa. e.g -otpVerified le otpverified field bahek aru field data dinxa 
     const users=await userModel.find({_id:{$ne : currentUser}}).select(['-otpVerified','-userPassword','-__v']);
-
     if(users.length > 0){  
           res.status(200).json({
             message:"adminUsers fetched success",

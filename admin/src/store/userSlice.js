@@ -3,7 +3,7 @@ import { STATUS } from "global/Status"
 import { AunthenticatedAPI } from "http"
 
 
-const orderSlice=createSlice({
+const userSlice=createSlice({
     name:'users',
     initialState:{
         status:STATUS.SUCCESS,
@@ -15,13 +15,19 @@ const orderSlice=createSlice({
         },
         setUsers(state,action){
             state.users=action.payload
+        },
+        removeUser(state,action){
+            const index=state.users.findIndex((user)=>user._id===action.payload.id)
+            if(index!==-1){
+                state.users.splice(index,1)
+            }
         }
     }
 })
 
-export const {setStatus,setUsers}=orderSlice.actions
+export const {setStatus,setUsers,removeUser}=userSlice.actions
 
-export default orderSlice.reducer;
+export default userSlice.reducer;
 
 
 export function fetchUser(){
@@ -33,6 +39,21 @@ export function fetchUser(){
             dispatch(setStatus(STATUS.SUCCESS))
         } catch (error) {
            console.log("user fetched error:",error);
+           dispatch(setStatus(STATUS.ERROR)) 
+        }
+    }
+}
+export function deleteUserById(id){
+    return async function deleteUserThunk(dispatch){
+        dispatch(setStatus(STATUS.LOADING))
+        try {
+            const res=await AunthenticatedAPI.delete(`/admin/users/${id}`)
+            if(res.status===200){
+                dispatch(removeUser({id}))
+                 dispatch(setStatus(STATUS.SUCCESS))
+            }
+        } catch (error) {
+           console.log("user deletedd error:",error);
            dispatch(setStatus(STATUS.ERROR)) 
         }
     }

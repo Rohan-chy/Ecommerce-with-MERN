@@ -10,7 +10,7 @@ const Products = () => {
     const [search,setSearch]=useState('')
     const [date,setDate]=useState('')
 
-
+    console.log(products)
 
     useEffect(()=>{
         dispatch(fetchProduct())

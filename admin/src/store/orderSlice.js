@@ -45,7 +45,7 @@ export function fetchOrder(){
         dispatch(setStatus(STATUS.LOADING))
         try {
             const res=await AunthenticatedAPI.get('/admin/orders')
-            dispatch(setOrders(res.data.data))
+            dispatch(setOrders(res.data.data.reverse()))
             dispatch(setStatus(STATUS.SUCCESS))
         } catch (error) {
            console.log("order fetched error:",error);

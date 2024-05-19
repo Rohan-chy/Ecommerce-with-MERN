@@ -29,7 +29,7 @@ export function fetchProduct(){
         dispatch(setStatus(STATUS.LOADING))
         try {
             const res=await AunthenticatedAPI.get('/product')
-            dispatch(setProducts(res.data.products))
+            dispatch(setProducts(res.data.products.reverse()))
             dispatch(setStatus(STATUS.SUCCESS))
         } catch (error) {
            console.log("product fetched error:",error);

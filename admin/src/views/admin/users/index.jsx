@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {Link} from 'react-router-dom'
+import { deleteUserById } from 'store/userSlice';
 import { fetchUser } from 'store/userSlice';
 
 const Users = () => {
@@ -19,6 +20,10 @@ const Users = () => {
           user.userEmail.toLowerCase().includes(search.toLowerCase())
         )
         .filter((user)=>date===''|| new Date(user.createdAt).toLocaleDateString()===new Date(date).toLocaleDateString())
+
+        const handleDelete=(id)=>{
+            dispatch(deleteUserById(id))
+        }
 
   return (
 <div className="antialiased font-sans bg-gray-200 pt-5">
@@ -69,6 +74,10 @@ const Users = () => {
                                     className="px-5 py-3 buser-b-2 buser-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     Registered At
                                 </th>
+                                <th
+                                    className="px-5 py-3 buser-b-2 buser-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Action
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -112,6 +121,11 @@ const Users = () => {
                                     <p className="text-gray-900 whitespace-no-wrap">
                                         {new Date(user.createdAt).toLocaleDateString()}
                                     </p>
+                                </td>
+                                <td className="px-5 py-5 buser-b buser-gray-200 bg-white text-sm text-left">
+                                    <button onClick={handleDelete(user._id)} className="text-white bg-red-500 whitespace-no-wrap p-2">
+                                        Delete
+                                    </button>
                                 </td>
                             </tr>
                                 ))
