@@ -49,7 +49,7 @@ exports.adminProductController=async(req,res)=>{
         })
     }
 
-    await productModel.create({
+   const data= await productModel.create({
         productName,
         productDescription,
         productPrice,
@@ -59,7 +59,8 @@ exports.adminProductController=async(req,res)=>{
     })
 
     res.status(200).json({
-        message:"product created success"
+        message:"product created success",
+        data
     })
 }
 

@@ -14,6 +14,8 @@ import {
   MdPerson,
 } from "react-icons/md";
 import OrderDetails from "views/admin/orders/OrderDetails";
+import SingleProduct from "views/admin/product/SingleProduct";
+import AddProduct from "views/admin/product/AddProduct";
 
 const routes = [
   {
@@ -49,6 +51,18 @@ const routes = [
     path: "products",
     icon: <MdPerson className="h-6 w-6" />,
     component: <Products />,
+  },
+  {
+    layout: "/admin",
+    path: "products/:id",
+    component: <SingleProduct />,
+  },
+  {
+    Name:'Add Product',
+    layout: "/admin",
+    icon: <MdBarChart className="h-6 w-6" />,
+    path: "addproduct",
+    component: <AddProduct />,
   },
 ];
 export default routes;

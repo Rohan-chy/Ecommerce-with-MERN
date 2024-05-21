@@ -7,15 +7,15 @@ const upload=multer({storage:storage})
 
 const router=require('express').Router()
 
-// avatar vaneko frontend bata pathako fieldname
+// productImage vaneko frontend bata pathako fieldname
 router.route('/product')
-.post(isAuthenticated,restrictRole('admin'),upload.single('avatar'),exceptionalHandling(adminProductController))
+.post(isAuthenticated,restrictRole('admin'),upload.single('productImage'),exceptionalHandling(adminProductController))
 .get(exceptionalHandling(getProducts));
 
 router.route('/admin/product/:id')
 .get(exceptionalHandling(singleProduct))
 .delete(isAuthenticated,restrictRole('admin'),exceptionalHandling(deleteProduct))
-.patch(isAuthenticated,restrictRole('admin'),upload.single('avatar'),exceptionalHandling(updateProduct))
+.patch(isAuthenticated,restrictRole('admin'),upload.single('productImage'),exceptionalHandling(updateProduct))
 
 
 module.exports=router

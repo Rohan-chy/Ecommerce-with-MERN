@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import { deleteProduct } from 'store/productSlice';
 import { fetchProduct } from 'store/productSlice';
 
 const Products = () => {
     const dispatch=useDispatch();
+    const navigate=useNavigate()
     const {products}=useSelector((state)=>state.products)
     const [productStat,setproductstatus]=useState('all')
     const [search,setSearch]=useState('')
@@ -67,7 +68,7 @@ const Products = () => {
                         className="appearance-none rounded-r rounded-l sm:rounded-l-none bproduct bproduct-gray-400 bproduct-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
                 </div>
             </div>
-            <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+            <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto max-h-screen overflow-auto">
                 <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
                     <table className="min-w-full leading-normal">
                         <thead>
@@ -98,7 +99,7 @@ const Products = () => {
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody >
                             {
                                 filteredproducts && filteredproducts.length>0 && filteredproducts.map((product)=>(
                                 <tr key={product._id}>
@@ -109,7 +110,7 @@ const Products = () => {
                                                 src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
                                                 alt="" />
                                         </div>
-                                       <Link to={`/myproducts/${product._id}`}>
+                                       <Link to={`/admin/products/${product._id}`}>
                                              <div className="ml-3">
                                                 <p className="text-[blue] whitespace-no-wrap underline">
                                                     {product._id}
