@@ -1,5 +1,5 @@
 import { AunthenticatedAPI } from 'http';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom'
 
@@ -7,13 +7,21 @@ const SingleProduct = () => {
   const {id}=useParams();
   const {products}=useSelector((state)=>state.products)
 
+  const [orderFetch,setOrerFetch]=useState([])
+
   // auta product id ko matrai details chahiyeko so filter gareko
   const filteredSingleproductDetail=products?.filter((product)=>product._id===id)
   console.log(filteredSingleproductDetail)
 
   const fetchOrderOfProduct=async()=>{
-    const res=await AunthenticatedAPI.get(`/productOrders/${id}`)
-    console.log(res.data)
+    try {
+      const res=await AunthenticatedAPI.get(`/productOrders/${id}`)
+    if(res.status===200){
+      setOrerFetch(res.data.data)
+    }
+    } catch (error) {
+      console.log('order fetched of product error:',error)
+    }
   }
 
   useEffect(()=>{
@@ -57,6 +65,7 @@ const SingleProduct = () => {
             <div className="flex justify-between space-x-8 products-start w-full">
               <p className="text-base dark:text-white xl:text-lg font-semibold leading-6 text-gray-800">Rs.{product.productPrice} per product</p>
               <p className="text-base dark:text-white xl:text-lg leading-6 text-gray-800">QTY:{product.productQuantity}</p>
+              <p className="text-base dark:text-white xl:text-lg leading-6 text-gray-800">{product.productStatus}</p>
             </div>
           </div>
         </div>
@@ -67,24 +76,97 @@ const SingleProduct = () => {
     <div className="h-[400px] bg-gray-50 dark:bg-gray-800 w-full xl:w-96 flex justify-between products-center md:products-start px-4 py-6 md:p-6 xl:p-8 flex-col">
       <div className=" flex flex-col md:flex-row xl:flex-col justify-start products-stretch h-full w-full md:space-x-6 lg:space-x-8 xl:space-x-0">
         <div className="flex justify-between xl:h-full products-stretch w-full flex-col mt-6 md:mt-0">
-         <div className='my-4'>
+         <div >
             <h1>Edit product status</h1>
             <select  className=" rounded  border-2  border-blue-600 block appearance-none w-full   py-2 px-4 pr-8 leading-tight focus:outline-none ">
                             <option value={'available'}>available</option>
                             <option value={'unavailable'}>unavailable</option>
           </select>
          </div>
-          <div className='my-4'>
-            <h1>Edit payment status</h1>
-            <select  className=" rounded  bproduct-2  bproduct-blue-600 block appearance-none w-full   py-2 px-4 pr-8 leading-tight focus:outline-none ">
-                            <option value='pending'>pending</option>
-                            <option value={'paid'}>paid</option>
-                            <option value={'unpaid'}>unpaid</option>
-          </select>
-          </div>
         </div>
       </div>
     </div>
+  </div>
+
+  <div>
+    <h1>Orders</h1>
+    <table className="min-w-full leading-normal ">
+                        <thead>
+                            <tr>
+                                <th
+                                    className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Order Id
+                                </th>
+                                <th
+                                    className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    User name
+                                </th>
+                                <th
+                                    className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Total Amt
+                                </th>
+                                <th
+                                    className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Order Status
+                                </th>
+                                <th
+                                    className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Payment Status
+                                </th>
+                                <th
+                                    className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Ordered At
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            {
+                                orderFetch && orderFetch.length>0 && orderFetch.map((order)=>(
+                                <tr key={order._id}>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                    <div className="flex items-center">
+                                        <div className="flex-shrink-0 w-10 h-10">
+                                            <img className="w-full h-full rounded-full"
+                                                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                                                alt="" />
+                                        </div>
+                                             <div className="ml-3">
+                                                <p className="text-[blue] whitespace-no-wrap underline">
+                                                    {order._id}
+                                                </p>
+                                            </div>
+                                    </div>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+                                    <p className="text-gray-900 whitespace-no-wrap ">{order?.userId?.userName}</p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+                                    <p className="text-gray-900 whitespace-no-wrap ">{order.totalAmount}</p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+                                    <p className="text-gray-900 whitespace-no-wrap">
+                                        {order.orderStatus}
+                                    </p>
+                                </td>
+                                
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+                                    <span
+                                        className={`relative inline-block px-3 py-1 font-semibold ${order.paymentDetails.paymentStatus==='paid'?'text-green-900':'text-red-500'} leading-tight`}>
+                                        <span aria-hidden
+                                            className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                        <span className="relative">{order.paymentDetails.paymentStatus}({order.paymentDetails.method})</span>
+                                    </span>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-left">
+                                    <p className="text-gray-900 whitespace-no-wrap">
+                                        {new Date(order.createdAt).toLocaleDateString()}
+                                    </p>
+                                </td>
+                            </tr>
+                                ))
+                            }
+                        </tbody>
+                    </table>
   </div>
 </div>
   )

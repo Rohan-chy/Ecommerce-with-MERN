@@ -252,8 +252,10 @@ exports.getOrdersOfProduct=async(req,res)=>{
         })
     }
 
-    const orders=await orderModel.find({'items.product':productId})
-    console.log(orders,'orders')
+    const orders=await orderModel.find({'items.product':productId}).populate({
+        path:'userId',
+        model:'UserModel'
+    })
 
     res.status(200).json({
         message:"fetched orders of product",
