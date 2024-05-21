@@ -1,16 +1,24 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom'
+import { AunthenticatedAPI } from 'http';
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom'
 
 const SingleProduct = () => {
   const {id}=useParams();
   const {products}=useSelector((state)=>state.products)
-  const navigate=useNavigate()
-  const dispatch=useDispatch()
 
   // auta product id ko matrai details chahiyeko so filter gareko
   const filteredSingleproductDetail=products?.filter((product)=>product._id===id)
   console.log(filteredSingleproductDetail)
+
+  const fetchOrderOfProduct=async()=>{
+    const res=await AunthenticatedAPI.get(`/productOrders/${id}`)
+    console.log(res.data)
+  }
+
+  useEffect(()=>{
+    fetchOrderOfProduct()
+  },[])
 
 
   // const handleproductstatus=(e)=>{

@@ -1,4 +1,5 @@
 const productModel = require("../model/productModel");
+const orderModel = require("../model/orderModel");
 const fs=require('fs')
 
 exports.adminProductController=async(req,res)=>{
@@ -233,4 +234,29 @@ exports.updateProduct=async(req,res)=>{
         data:data
     })
     
+}
+
+exports.getOrdersOfProduct=async(req,res)=>{
+    const {productId}=req.params;
+
+    if(!productId){
+        return res.status(400).json({
+            message:"please provide product id"
+        })
+    }
+
+    const products=await productModel.findById(productId);
+    if(!products){
+        return res.status(400).json({
+            message:'no product found'
+        })
+    }
+
+    const orders=await orderModel.find({'items.product':productId})
+    console.log(orders,'orders')
+
+    res.status(200).json({
+        message:"fetched orders of product",
+        data:orders
+    })
 }

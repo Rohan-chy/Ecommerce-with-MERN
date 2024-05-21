@@ -25,6 +25,7 @@ const ProductDetails = () => {
     }
 
     dispatch(addToCart(productId))
+    navigate('/cart')
   }
 
   return (
@@ -88,7 +89,7 @@ const ProductDetails = () => {
             <button onClick={()=>addCart(item._id)} className="h-10 px-6 font-semibold rounded-md border border-balck-800 text-white bg-red-500 hover:opacity-80" >
             Add to cart
           </button> :
-          <button onClick={()=>addCart(item._id)} className="h-10 px-6 font-semibold rounded-md border border-balck-800 text-white bg-red-500 hover:opacity-80" >
+          <button disabled className="h-10 px-6 font-semibold rounded-md border border-balck-800 text-white bg-red-500 hover:opacity-80" >
           Out of Stock
         </button>
           }

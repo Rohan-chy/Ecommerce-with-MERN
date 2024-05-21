@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {Link, useNavigate} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import { deleteProduct } from 'store/productSlice';
 import { fetchProduct } from 'store/productSlice';
 
 const Products = () => {
     const dispatch=useDispatch();
-    const navigate=useNavigate()
     const {products}=useSelector((state)=>state.products)
     const [productStat,setproductstatus]=useState('all')
     const [search,setSearch]=useState('')
     const [date,setDate]=useState('')
 
-    console.log(products)
 
     useEffect(()=>{
         dispatch(fetchProduct())

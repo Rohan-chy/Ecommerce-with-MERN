@@ -44,8 +44,10 @@ export function addToCart(productId){
         dispatch(setCartStatus(STATUS.LOADING))
         try {
             const res=await AunthenticatedAPI.post(`/cart/${productId}`)
-            dispatch(setItem(res.data.data))
-            dispatch(setCartStatus(STATUS.SUCCESS))
+            if(res.status===200){
+                dispatch(setItem(res.data.data))
+                dispatch(setCartStatus(STATUS.SUCCESS))
+            }
         } catch (error) {
             console.log("cart fetched error:",error)
             dispatch(setCartStatus(STATUS.ERROR))

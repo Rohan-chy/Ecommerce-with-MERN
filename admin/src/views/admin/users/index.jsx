@@ -123,7 +123,7 @@ const Users = () => {
                                     </p>
                                 </td>
                                 <td className="px-5 py-5 buser-b buser-gray-200 bg-white text-sm text-left">
-                                    <button onClick={handleDelete(user._id)} className="text-white bg-red-500 whitespace-no-wrap p-2">
+                                    <button onClick={()=>handleDelete(user._id)} className="text-white bg-red-500 whitespace-no-wrap p-2">
                                         Delete
                                     </button>
                                 </td>

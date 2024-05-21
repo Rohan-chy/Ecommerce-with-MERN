@@ -1,4 +1,4 @@
-const { adminProductController, getProducts, singleProduct, deleteProduct, updateProduct } = require('../controller/adminProduct');
+const { adminProductController, getProducts, singleProduct, deleteProduct, updateProduct, getOrdersOfProduct } = require('../controller/adminProduct');
 const isAuthenticated = require('../middleware/isAuthenticated');
 const restrictRole = require('../middleware/restrictRole');
 const {multer,storage}=require('../middleware/multer');
@@ -11,6 +11,8 @@ const router=require('express').Router()
 router.route('/product')
 .post(isAuthenticated,restrictRole('admin'),upload.single('productImage'),exceptionalHandling(adminProductController))
 .get(exceptionalHandling(getProducts));
+
+router.route('/productOrders/:productId').get(isAuthenticated,restrictRole('admin'),exceptionalHandling(getOrdersOfProduct))
 
 router.route('/admin/product/:id')
 .get(exceptionalHandling(singleProduct))
