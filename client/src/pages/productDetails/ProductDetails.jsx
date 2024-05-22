@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import {useParams,useNavigate} from 'react-router-dom'
 import { useSelector,useDispatch } from 'react-redux'
 import { addToCart } from '../../store/cartSlice'
-import { fetchSingleProduct } from '../../store/productSlice'
+import { STATUS } from '../../global/Status'
 
 const ProductDetails = () => {
   const id=useParams().id;
@@ -11,13 +11,12 @@ const ProductDetails = () => {
   const dispatch=useDispatch();
 
   const {data:user}=useSelector((state)=>state.auth)
-  const {data:details}=useSelector((state)=>state.products)
+  const {data:details,status}=useSelector((state)=>state.products)
 
   console.log(details)
+  const singleProduct=details.filter((product)=>product._id===id)
+  console.log(singleProduct,'single')
 
-  useEffect(()=>{
-    dispatch(fetchSingleProduct(id))
-  },[])
 
   const addCart=(productId)=>{
     if(user.length==0 && (localStorage.getItem('token')=='' || localStorage.getItem('token')==null || localStorage.getItem('token')==undefined)){
@@ -25,13 +24,17 @@ const ProductDetails = () => {
     }
 
     dispatch(addToCart(productId))
-    navigate('/cart')
+    if(status===STATUS.SUCCESS){
+      navigate('/cart')
+    }
   }
+  
+ 
 
   return (
 <div className="flex min-h-screen items-center justify-center bg-gray-100">
   {
-    details?.map((item,i)=>(
+    singleProduct?.map((item,i)=>(
       <div key={item._id} className="flex font-sans">
     <div className="flex-none w-48 relative">
       <img src={item.productImage} alt="" className="absolute inset-0 w-full h-full object-cover" loading="lazy" />

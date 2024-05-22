@@ -8,7 +8,8 @@ const authSlice=createSlice({
     initialState:{
         data:[],
         status:STATUS.SUCCESS,
-        message:''
+        message:'',
+        email:''
     },
     reducers:{
         setUsers(state,action){
@@ -22,11 +23,14 @@ const authSlice=createSlice({
         },
         logoutUser(state,action){
             state.data=[]
+        },
+        setEmail(state,action){
+            state.email=action.payload
         }
     }
 })
 
-export const {setUsers,setUserStatus,setMessage,logoutUser}=authSlice.actions;
+export const {setUsers,setUserStatus,setMessage,logoutUser,setEmail}=authSlice.actions;
 
 export default authSlice.reducer;
 
@@ -63,7 +67,6 @@ export function loginUser(data){
                 dispatch(setUsers(res.data.data))
                 localStorage.setItem('token',res.data.token)
                 dispatch(setMessage(res.data.message))
-                window.location.href='/'
 
             }
             dispatch(setUserStatus(STATUS.SUCCESS))
@@ -73,6 +76,64 @@ export function loginUser(data){
             if(error.response.status>=400){
                 dispatch(setMessage(error.response.data.message))
             }
+            dispatch(setUserStatus(STATUS.ERROR)) 
+            
+        }
+    }
+}
+export function forgetPassword(userEmail){
+    return async function forgetPasswordThunk(dispatch){
+        dispatch(setUserStatus(STATUS.LOADING))
+        try {
+            const res=await API.post('/forgotpassword',{userEmail})
+            if(res.status>=200 && res.status<=300){
+                dispatch(setEmail({userEmail}))
+                dispatch(setMessage(res.data.message))
+                 dispatch(setUserStatus(STATUS.SUCCESS))
+
+            }
+
+        } catch (error) {
+            console.log("forget password error:",error)
+            dispatch(setMessage(error.response.data.message))
+            dispatch(setUserStatus(STATUS.ERROR)) 
+            
+        }
+    }
+}
+export function verifyotp(userEmail,otp){
+    return async function verifyotpThunk(dispatch){
+        dispatch(setUserStatus(STATUS.LOADING))
+        try {
+            const res=await API.post('/verifyOtp',{userEmail,otp})
+            if(res.status>=200 && res.status<=300){
+                dispatch(setMessage(res.data.message))
+                 dispatch(setUserStatus(STATUS.SUCCESS))
+
+            }
+
+        } catch (error) {
+            console.log("verify otp error:",error)
+            dispatch(setMessage(error.response.data.message))
+            dispatch(setUserStatus(STATUS.ERROR)) 
+            
+        }
+    }
+}
+export function RESETPassword(data){
+    return async function RESETPasswordThunk(dispatch){
+        dispatch(setUserStatus(STATUS.LOADING))
+        try {
+            const res=await API.post('/resetPassword',data)
+            if(res.status>=200 && res.status<=300){
+                dispatch(setMessage(res.data.message))
+                 dispatch(setUserStatus(STATUS.SUCCESS))
+
+            }
+
+        } catch (error) {
+            console.log("reset password error:",error)
+            dispatch(setMessage(error.response.data.message))
             dispatch(setUserStatus(STATUS.ERROR)) 
             
         }

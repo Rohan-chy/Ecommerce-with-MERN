@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import {useDispatch,useSelector} from "react-redux"
 import { loginUser } from '../store/authSlice';
-import {useNavigate} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
+import { STATUS } from '../global/Status';
 
 const LoginForm = () => {
 
@@ -27,16 +28,10 @@ const LoginForm = () => {
     e.preventDefault();
     // Handle form submission here
     dispatch(loginUser(formData))
-    // navigate('/')
 
-    // if(message==='login success'){
-    //      navigate('/')
-    // }
-    // else{
-    //   alert(message)
-    //  navigate('/login')
-    // }
-
+    if(status===STATUS.SUCCESS){
+      window.location.href='/'
+    }
   
   };
 
@@ -76,6 +71,9 @@ const LoginForm = () => {
           Login
         </button>
       </form>
+      <Link to='/forgetpassword' >
+        <p className='text-left mt-4'>Forgot Password?</p>
+      </Link>
     </div>
   );
 };

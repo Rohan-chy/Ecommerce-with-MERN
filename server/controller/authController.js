@@ -102,8 +102,9 @@ exports.forgotPassword=async(req,res)=>{
         message:`The otp for reset password is ${otp}. Do not share with anyone.`
     })
 
+    console.log(userData)
     res.status(200).json({
-        message:"otp sent successfully"
+        message:"otp sent successfully",
     })
 }
 
