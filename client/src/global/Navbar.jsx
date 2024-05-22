@@ -10,6 +10,7 @@ const Navbar = () => {
     const {data:user}=useSelector((state)=>state.auth)
     const dispatch=useDispatch();
     const navigate=useNavigate();
+    console.log(user)
 
     const logOut=()=>{
         dispatch(logoutUser())
@@ -19,7 +20,11 @@ const Navbar = () => {
 
     // refresh garda cart length 0 hune vayeko le server bata fetch garera length render gareko
     useEffect(()=>{
-        dispatch(fetchCart())
+        // if condition kna use gareko vanda kheri fetchCart() method le authSlice maa authenticatedApi use garira xa but
+        // jaba user le first time visit garxa uh sanga token hudaina jasle garda jsontoken error aaera thiyo so user huda matrai fetchCart invoke gareko
+        if(localStorage.getItem('token')||user?.length>0){
+            dispatch(fetchCart())
+        }
     },[])
 
 
@@ -44,9 +49,14 @@ const Navbar = () => {
                     <div className="text-gray-600 lg:pr-4">
                         <ul className="space-y-6 tracking-wide font-medium text-sm md:flex md:space-y-0">
                             <li>
-                                <Link to="/profile" className="block md:px-4 transition hover:text-yellow-700">
-                                    <span>Profile</span>
-                                </Link>
+                                {/* login or user xa vne matrai dekhaune */}
+                                {
+                                      (localStorage.getItem('token')||user?.length>0) &&(
+                                        <Link to="/profile" className="block md:px-4 transition hover:text-yellow-700">
+                                             <span>Profile</span>
+                                        </Link>
+                                    )
+                                }
                             </li>
                             <li>
                                 <p href="#" className="block md:px-4 transition hover:text-yellow-700">
@@ -54,7 +64,7 @@ const Navbar = () => {
                                 </p>
                             </li>
                             <li>
-                                {items && items.length > 0 && <p href="#" className="block md:px-4 transition hover:text-yellow-700">
+                                {items && items.length > 0 && <p className="block md:px-4 transition hover:text-yellow-700">
                                     <Link to={'/cart'}>Cart <sup>{items.length}</sup></Link >
                                 </p>}
                             </li>

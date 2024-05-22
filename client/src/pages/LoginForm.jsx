@@ -30,7 +30,7 @@ const LoginForm = () => {
     dispatch(loginUser(formData))
 
     if(status===STATUS.SUCCESS){
-      window.location.href='/'
+      navigate('/')
     }
   
   };
